@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Chrome perso profile
+Terminal=false
+Name=Perso
+Exec=/opt/google/chrome/chrome --restore-last-session --profile-directory="Profile 2" 
+Type=Application
+Icon=google-chrome

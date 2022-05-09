@@ -1,0 +1,27 @@
+{
+    "bar_id": "bar-0",
+    "ipc": true,
+    "layer": "top",
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": [],
+    "modules-right": [ "pulseaudio", "clock", "battery"],
+    "sway/workspaces": {
+      "persistent_workspaces": {
+        "Pro": ["eDP-1"],
+        "Perso": ["eDP-1"],
+        "Pro-2": ["DP-2"],
+        "Perso-2": ["DP-2"]
+      }
+    },
+    "sway/window": {
+        "max-length": 50
+    },
+    "battery": {
+        "format": "{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "clock": {
+        "format": "{:%a, %d. %b  %H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+    }
+}

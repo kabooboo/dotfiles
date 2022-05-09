@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Dockerized PGAdmin4
+Terminal=false
+Name=PgAdmin 4
+Exec=/home/gcreti/.dotfiles/scripts/pgadmin.sh
+Type=Application
+Icon=pgadmin
