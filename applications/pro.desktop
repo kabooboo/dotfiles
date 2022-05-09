@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Chrome pro profile
+Terminal=false
+Name=Pro
+Exec=/opt/google/chrome/chrome --restore-last-session --profile-directory=Default 
+Type=Application
+Icon=google-chrome

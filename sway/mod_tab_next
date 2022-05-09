@@ -1,0 +1,57 @@
+#!/bin/bash
+
+args=("$@")
+
+edp1_ws="Pro Perso"
+dp2_ws="Pro-2 Perso-2"
+
+declare -A OUTPUTS
+
+OUTPUTS[eDP-1]="${edp1_ws}"
+OUTPUTS[DP-2]="${dp2_ws}"
+
+CURRENT_OUTPUTS=( $(swaymsg -t get_outputs | jq -r '.[].name') )
+FOCUSED_OUTPUT=$(swaymsg -t get_tree | jq -r '.nodes[] | select([recurse(.nodes[]?, .floating_nodes[]?) | .focused] | any) | .name'
+)
+
+for output in "${!OUTPUTS[@]}"
+do
+    # Exit if output not plugged in
+    if [[  " ${CURRENT_OUTPUTS[*]} " != *" ${output} "* ]]; then
+        break
+    fi
+
+    # This script switches for all outputs at the same time. If we want to switch for only the focused
+    # output, uncomment the following block:
+    # if [[ "${FOCUSED_OUTPUT}" != "${output}" ]]; then
+    #     break
+    # fi
+
+    CURRENT_WORKSPACE=$(swaymsg -t get_workspaces | jq -r --arg output "$output" '.[] | select(.visible and (.output==$output)).name')
+    OUTPUT_WORKSPACES=(${OUTPUTS[$output]})
+    IS_FOCUSED=$(swaymsg -t get_workspaces | jq -r --arg output "$output" '.[] | select(.visible and (.output==$output)).focused')
+
+    # Get the index of current workspace
+    index=-1
+    for i in "${!OUTPUT_WORKSPACES[@]}";
+    do
+        if [[ "${OUTPUT_WORKSPACES[$i]}" = "${CURRENT_WORKSPACE}" ]];
+        then
+            index=$i
+            break
+        fi
+    done
+
+    # If index is last, then loop over to first
+    if [[ "$(expr ${#OUTPUT_WORKSPACES[@]} - 1)" = "${index}" ]];
+    then
+        NEXT_WORKSPACE="${OUTPUT_WORKSPACES[0]}"
+    else
+        NEXT_WORKSPACE="${OUTPUT_WORKSPACES[$index+1]}"
+    fi
+
+    if [[ "${args[0]}" == "--move" && "${IS_FOCUSED}"=="true" ]]; then
+        swaymsg move container to workspace $NEXT_WORKSPACE
+    fi
+    swaymsg workspace $NEXT_WORKSPACE
+done
