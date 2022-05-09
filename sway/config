@@ -92,6 +92,10 @@ input * xkb_layout "br"
     # Start your launcher
     bindsym Control+space exec $menu
 
+    # Pretty clipboard
+    bindsym $mod+c exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)
+
+
     # Bind the screen capture
     bindsym Control+$alt+c exec grim -g "$(slurp -d)" - | wl-copy -t image/png
     bindsym Print exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy
@@ -292,4 +296,5 @@ include /etc/sway/config.d/*
 
 ## Init
 exec mako
-
+exec ~/.config/sway/xdg-desktop
+exec_always ~/.config/sway/start-gclip
