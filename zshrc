@@ -106,6 +106,7 @@ source $ZSH/oh-my-zsh.sh
 alias k=kubectl
 alias ktx=kubectx
 alias kns=kubens
+alias copy=wl-copy
 
 ## Completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -127,7 +128,13 @@ function tard {
 }
 
 ## Exports
+
 export EDITOR=nano
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/.go/bin
+export GOPATH=$HOME/.go
+
 
 ## Sources
 source ~/.secrets/credentials.sh
