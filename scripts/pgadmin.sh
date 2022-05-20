@@ -11,10 +11,12 @@ if [ ! "$(docker ps -q -f name=pgadmin4)" ]; then
       --name pgadmin4 \
       --network host \
       --restart always \
+      --user root \
       -e "PGADMIN_LISTEN_PORT=5050" \
       -e "PGADMIN_CONFIG_SERVER_MODE=False" \
       -e "PGADMIN_DEFAULT_EMAIL=***REMOVED***" \
       -e "PGADMIN_DEFAULT_PASSWORD=toto" \
+      -e "MASTER_PASSWORD_REQUIRED=false" \
       -d \
       dpage/pgadmin4:6.3
     sleep 6

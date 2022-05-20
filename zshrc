@@ -1,3 +1,4 @@
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -10,6 +11,7 @@ SPACESHIP_KUBECTL_VERSION_SHOW=false
 
 autoload -Uz compinit; compinit
 
+autoload -U select-word-style; select-word-style bash
 
 
 # Set list of themes to pick from when loading at random
@@ -106,6 +108,8 @@ source $ZSH/oh-my-zsh.sh
 alias k=kubectl
 alias ktx=kubectx
 alias kns=kubens
+alias dc="docker compose"
+alias d=docker
 alias copy=wl-copy
 
 ## Completion
@@ -116,10 +120,10 @@ source <(k completion zsh)
 
 ## Functions
 function heka-open-admin() {
-  protocol=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq -r '.data.PROJECT_CONFIG' | base64 -d | yq -r '.project.protocol')
-  hostname=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq -r '.data.PROJECT_CONFIG' | base64 -d | yq -r '.project.hostname')
-  prefix_path=$(kubectl  $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq -r '.data.PROJECT_CONFIG' | base64 -d | yq -r '.network."prefix-path"')
-  kubectl  $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq -r '.data.PROJECT_CONFIG' | base64 -d | yq -r '.authentication.inhouse.administrator.password' | xclip -sel clipboard
+  protocol=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.protocol')
+  hostname=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.hostname')
+  prefix_path=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.network."prefix-path"')
+  kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.authentication.inhouse.administrator.password' | wl-copy
   echo "${protocol}://${hostname}${prefix_path}admin"
   /opt/google/chrome/chrome "${protocol}://${hostname}${prefix_path}admin"
 }
@@ -131,8 +135,7 @@ function tard {
 
 export EDITOR=nano
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:$HOME/.go/bin
+export PATH=$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin
 export GOPATH=$HOME/.go
 
 

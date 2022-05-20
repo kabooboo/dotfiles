@@ -4,21 +4,24 @@ args=("$@")
 
 edp1_ws="Pro Perso"
 dp2_ws="Pro-2 Perso-2"
+dp4_ws="Pro-3 Perso-3"
 
 declare -A OUTPUTS
 
 OUTPUTS[eDP-1]="${edp1_ws}"
 OUTPUTS[DP-2]="${dp2_ws}"
+OUTPUTS[DP-4]="${dp4_ws}"
 
-CURRENT_OUTPUTS=( $(swaymsg -t get_outputs | jq -r '.[].name') )
+CURRENT_OUTPUTS=( $(swaymsg -t get_outputs | jq -r '.[] | select(.active) | .name') )
 FOCUSED_OUTPUT=$(swaymsg -t get_tree | jq -r '.nodes[] | select([recurse(.nodes[]?, .floating_nodes[]?) | .focused] | any) | .name'
 )
+
 
 for output in "${!OUTPUTS[@]}"
 do
     # Exit if output not plugged in
     if [[  " ${CURRENT_OUTPUTS[*]} " != *" ${output} "* ]]; then
-        break
+        continue
     fi
 
     # This script switches for all outputs at the same time. If we want to switch for only the focused
