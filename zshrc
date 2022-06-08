@@ -119,6 +119,7 @@ source <(kubectl completion zsh)
 source <(k completion zsh)
 
 ## Functions
+# Open Heka platform as an admin
 function heka-open-admin() {
   protocol=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.protocol')
   hostname=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.hostname')
@@ -129,6 +130,25 @@ function heka-open-admin() {
 }
 function tard {
     tar -czvf ./$1.tar.gz $1 
+}
+
+# Archive buckets for heka platforms
+function archive-buckets() {
+  (gsutil label get gs://heka-$2-$1-backups | grep -q archived_since) && echo "Bucket is already labelled" || gsutil label ch -l archived_since:$(date +%s) gs://heka-$2-$1-backups
+  (gsutil label get gs://heka-$2-$1-storage | grep -q archived_since) && echo "Bucket is already labelled" || gsutil label ch -l archived_since:$(date +%s) gs://heka-$2-$1-storage
+  gsutil defstorageclass set ARCHIVE gs://heka-$2-$1-backups
+  gsutil defstorageclass set ARCHIVE gs://heka-$2-$1-storage
+  gsutil -m rewrite -Ors ARCHIVE "gs://heka-$2-$1-storage/"
+  gsutil -m rewrite -Ors ARCHIVE "gs://heka-$2-$1-backups/"
+}
+
+function rollback_state {
+
+    CURRENT_VERSION=$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3" | jq -r '.serial')
+    curl -X POST -H 'content-type:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+      --data "$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" )" \
+      "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3"
+
 }
 
 ## Exports

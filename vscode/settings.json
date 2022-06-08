@@ -155,6 +155,5 @@
   "security.workspace.trust.untrustedFiles": "open",
   "editor.inlineSuggest.enabled": true,
   "terminal.integrated.enableMultiLinePasteWarning": false,
-  "gitlens.mode.active": "zen",
-  "window.zoomLevel": 1
+  "gitlens.mode.active": "zen"
 }
