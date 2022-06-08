@@ -168,7 +168,7 @@ input * xkb_layout "br"
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
 
-    # Ditto, with arrow keys
+    # Move container
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
@@ -323,3 +323,4 @@ include /etc/sway/config.d/*
 exec mako
 exec ~/.config/sway/xdg-desktop
 exec_always ~/.config/sway/start-gclip
+# exec_always autotiling
