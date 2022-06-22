@@ -111,6 +111,7 @@ alias kns=kubens
 alias dc="docker compose"
 alias d=docker
 alias copy=wl-copy
+alias bctl=bluetoothctl
 
 ## Completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
