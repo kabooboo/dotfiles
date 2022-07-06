@@ -74,6 +74,8 @@ autoload -U select-word-style; select-word-style bash
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+zstyle ':autocomplete:*' default-context history-incremental-search-backward
+
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
@@ -158,11 +160,13 @@ export EDITOR=nano
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export PATH=$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin
 export GOPATH=$HOME/.go
+export NVM_DIR="$HOME/.nvm"
 
 
 ## Sources
 source ~/.secrets/credentials.sh
 source ~/.secrets/uris.sh
 
-
-
+# NVM
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

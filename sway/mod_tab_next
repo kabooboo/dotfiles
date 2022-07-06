@@ -4,12 +4,14 @@ args=("$@")
 
 edp1_ws="Pro Perso"
 dp2_ws="Pro-2 Perso-2"
-dp4_ws="Pro-3 Perso-3"
+dp3_ws="Pro-3 Perso-3"
+dp4_ws="Pro-4 Perso-4"
 
 declare -A OUTPUTS
 
 OUTPUTS[eDP-1]="${edp1_ws}"
 OUTPUTS[DP-2]="${dp2_ws}"
+OUTPUTS[DP-3]="${dp3_ws}"
 OUTPUTS[DP-4]="${dp4_ws}"
 
 CURRENT_OUTPUTS=( $(swaymsg -t get_outputs | jq -r '.[] | select(.active) | .name') )

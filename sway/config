@@ -41,6 +41,10 @@ output DP-4 {
   pos 0 0
 }
 
+output DP-3 {
+  pos 0 0
+}
+
 bindswitch --locked lid:on output eDP-1 disable
 bindswitch --locked lid:off output eDP-1 enable
 
@@ -219,6 +223,14 @@ input * xkb_layout "br"
 
     workspace $ws6 {
         output DP-4
+    }
+
+    workspace $ws5 {
+        output DP-3
+    }
+
+    workspace $ws6 {
+        output DP-3
     }
 
 #

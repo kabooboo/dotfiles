@@ -11,8 +11,10 @@
         "Perso": ["eDP-1"],
         "Pro-2": ["DP-2"],
         "Perso-2": ["DP-2"],
-        "Pro-3": ["DP-4"],
-        "Perso-3": ["DP-4"]
+        "Pro-3": ["DP-3"],
+        "Perso-3": ["DP-3"],
+        "Pro-4": ["DP-4"],
+        "Perso-4": ["DP-4"]
       }
     },
     "sway/window": {
