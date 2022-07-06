@@ -179,5 +179,5 @@
   "editor.inlineSuggest.enabled": true,
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "gitlens.mode.active": "zen",
-  "window.zoomLevel": -1
+  "window.zoomLevel": 1
 }
