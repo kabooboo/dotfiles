@@ -30,7 +30,7 @@
     },
     {
         "key": "ctrl+'",
-        "command": "workbench.action.terminal.toggleTerminal"
+        "command": "workbench.action.terminal.toggleTerminal",
     },
     {
         "key": "ctrl+shift+[BracketLeft]",

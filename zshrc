@@ -75,8 +75,9 @@ autoload -U select-word-style; select-word-style bash
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 zstyle ':autocomplete:*' default-context history-incremental-search-backward
+zstyle ':z4h:autosuggestions' forward-char 'accept'
 
-plugins=(git)
+plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -151,6 +152,17 @@ function rollback_state {
     curl -X POST -H 'content-type:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
       --data "$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" )" \
       "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3"
+
+}
+
+function bridge {
+
+nohup gcloud compute start-iap-tunnel  --quiet \
+    shared-platforms-bastion 5432 \
+    --project heka-asterix-$1 \
+    --zone europe-west1-b \
+    --local-host-port=0.0.0.0:5432 & disown
+
 
 }
 
