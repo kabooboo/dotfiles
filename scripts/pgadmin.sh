@@ -8,6 +8,7 @@ if [ ! "$(docker ps -q -f name=pgadmin4)" ]; then
     # Container is not running
     docker run \
       -v ~/.pgadmin:/var/lib/pgadmin \
+      -v ~/.ssh:/root/.ssh:ro \
       --name pgadmin4 \
       --network host \
       --restart always \
