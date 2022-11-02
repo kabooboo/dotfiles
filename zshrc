@@ -155,6 +155,23 @@ function rollback_state {
 
 }
 
+function use_common_cluster {
+  gcloud beta compute ssh common-tooling-bastion \
+    --project=sia-devops \
+    --zone=europe-west1-b \
+    -- -4 -L8888:localhost:8888 -N -q -f &
+  export HTTPS_PROXY=localhost:8888
+}
+
+function disable_common_cluster {
+  unset HTTPS_PROXY
+  netstat -lnpt | grep 8888 | awk '{print $7}' | grep -o '[0-9]\+' | sort -u | xargs sudo kill
+}
+
+function tfswitch {
+  tfswitch -b $HOME/.bin/terraform "$@"
+}
+
 function bridge {
 
 nohup gcloud compute start-iap-tunnel  --quiet \
@@ -163,14 +180,17 @@ nohup gcloud compute start-iap-tunnel  --quiet \
     --zone europe-west1-b \
     --local-host-port=0.0.0.0:5432 & disown
 
+}
 
+function update_cost_center {
+gsutil cp $HOME/Documents/finops/project_cost_center.csv gs://finops_constants_ingest/project_cost_center.csv
 }
 
 ## Exports
 
 export EDITOR=nano
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export PATH=$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin
+export PATH=$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin
 export GOPATH=$HOME/.go
 export NVM_DIR="$HOME/.nvm"
 

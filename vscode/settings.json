@@ -69,9 +69,6 @@
       "source.organizeImports": true
     }
   },
-  "terraform-ls.experimentalFeatures": {
-    "validateOnSave": true
-  },
   "prettier.printWidth": 120,
   // Python
   "python.pythonPath": "/usr/bin/env python3",
@@ -95,13 +92,6 @@
     "3",
     "--trailing-comma"
   ],
-  "terraform.languageServer": {
-    "external": true,
-    "pathToBinary": "",
-    "args": ["serve"],
-    "maxNumberOfProblems": 100,
-    "trace.server": "off"
-  },
   "terminal.integrated.profiles.linux": {
     "zsh": {
       "path": "/bin/zsh"
@@ -161,5 +151,8 @@
   "gitlens.mode.active": "zen",
   "terminal.integrated.shellIntegration.enabled": true,
   "workbench.colorTheme": "Penumbra Dark",
-  "asciidoc.use_kroki": true
+  "asciidoc.use_kroki": true,
+  "terraform.languageServer.enable": true,
+  "terraform.languageServer.path": "",
+  "terraform.experimentalFeatures.validateOnSave": true
 }

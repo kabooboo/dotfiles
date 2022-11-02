@@ -14,7 +14,9 @@
         "Pro-3": ["DP-3"],
         "Perso-3": ["DP-3"],
         "Pro-4": ["DP-4"],
-        "Perso-4": ["DP-4"]
+        "Perso-4": ["DP-4"],
+        "Pro-5": ["DP-5"],
+        "Perso-5": ["DP-5"]
       }
     },
     "sway/window": {
