@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Launch kpmenu
+Terminal=false
+Name=TOTP
+Exec=kpmenu
+Type=Application
+Icon=keepassxc

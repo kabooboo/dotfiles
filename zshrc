@@ -186,6 +186,10 @@ function update_cost_center {
 gsutil cp $HOME/Documents/finops/project_cost_center.csv gs://finops_constants_ingest/project_cost_center.csv
 }
 
+function totp {
+  keepassxc-cli clip --totp $HOME/.secrets/PasswordsPerso.kdbx $1
+}
+
 ## Exports
 
 export EDITOR=nano
@@ -202,3 +206,4 @@ source ~/.secrets/uris.sh
 # NVM
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+

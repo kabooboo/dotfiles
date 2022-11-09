@@ -1,5 +1,8 @@
 [user]
 	email = ***REMOVED***
 	name = Gabriel Creti
+	signingkey = 72270EE6A62AE81FF222AD421D293D0924662E42
 [pull]
 	rebase = false
+[commit]
+	gpgsign = true

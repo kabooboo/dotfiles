@@ -16,7 +16,9 @@ configuration{
     display-Network: " 🌐  Network";
     sidebar-mode: true;
     sort: true;
-    no-levenshtein-sort: true;
+    no-levenshtein-sort: false;
+    sorting-method: "fzf";
+    steal-focus: true;
 }
 
 @theme "catppuccin"
