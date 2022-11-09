@@ -71,9 +71,9 @@
   },
   "prettier.printWidth": 120,
   // Python
-  "python.pythonPath": "/usr/bin/env python3",
   "python.defaultInterpreterPath": "/usr/bin/python3",
   "python.linting.banditEnabled": true,
+  "python.linting.banditArgs": ["-c", "pyproject.toml"],
   "python.linting.flake8Enabled": true,
   "python.linting.flake8Args": ["--max-line-length=79", "--ignore=E203,W503"],
   "python.linting.pylintEnabled": true,
@@ -134,7 +134,8 @@
     "vs-kubernetes.local-tunnel-debug-provider": "",
     "checkForMinikubeUpgrade": true,
     "logsDisplay": "webview",
-    "imageBuildTool": "Docker"
+    "imageBuildTool": "Docker",
+    "vs-kubernetes.crd-code-completion": "disabled"
   },
   "files.exclude": {
     "__pycache__": true,
