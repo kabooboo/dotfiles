@@ -115,7 +115,7 @@ alias dc="docker compose"
 alias d=docker
 alias copy=wl-copy
 alias bctl=bluetoothctl
-
+alias giphon="/usr/bin/env python3 -m giphon"
 ## Completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -169,7 +169,7 @@ function disable_common_cluster {
 }
 
 function tfswitch {
-  tfswitch -b $HOME/.bin/terraform "$@"
+  /usr/local/bin/tfswitch -b $HOME/.bin/terraform "$@"
 }
 
 function bridge {
@@ -189,6 +189,7 @@ gsutil cp $HOME/Documents/finops/project_cost_center.csv gs://finops_constants_i
 function totp {
   keepassxc-cli clip --totp $HOME/.secrets/PasswordsPerso.kdbx $1
 }
+
 
 ## Exports
 
