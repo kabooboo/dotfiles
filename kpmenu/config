@@ -8,7 +8,7 @@ ClipboardTool = "wl-clipboard"
 ClipboardTimeout = 15
 NoCache = false
 CacheOneTime = false
-CacheTimeout = 60
+CacheTimeout = 3600
 NoOTP = false
 
 [executable]

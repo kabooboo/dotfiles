@@ -1,6 +1,5 @@
 configuration{
     modi: "run,drun,emoji";
-    lines: 5;
     font: "Roboto 14";
     show-icons: true;
     icon-theme: "Flat-Remix-Blue-Dark";
@@ -8,15 +7,12 @@ configuration{
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
-    hide-scrollbar: true;
     display-emoji: " 🔥 Emoji ";
     display-drun: " ⚙️  Apps ";
     display-run: "   Run ";
     display-window: " 🪟﩯  window";
-    display-Network: " 🌐  Network";
     sidebar-mode: true;
     sort: true;
-    no-levenshtein-sort: false;
     sorting-method: "fzf";
     steal-focus: true;
 }
