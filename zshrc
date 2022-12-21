@@ -133,7 +133,7 @@ function heka-open-admin() {
   /opt/google/chrome/chrome "${protocol}://${hostname}${prefix_path}admin"
 }
 function tard {
-    tar -czvf ./$1.tar.gz $1 
+    tar -czvf ./$1.tar.gz $1
 }
 
 # Archive buckets for heka platforms
@@ -148,10 +148,10 @@ function archive-buckets() {
 
 function rollback_state {
 
-    CURRENT_VERSION=$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3" | jq -r '.serial')
+    CURRENT_VERSION=$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3" | jq -r '.serial')
     curl -X POST -H 'content-type:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
-      --data "$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" )" \
-      "https://git.sia-partners.com/api/v4/projects/$1/terraform/state/env-$3"
+      --data "$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" )" \
+      "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3"
 
 }
 
