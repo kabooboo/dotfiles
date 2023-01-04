@@ -80,18 +80,7 @@
   "python.linting.pylintArgs": ["--load-plugins", "pytest_pylint", "pylint_flask_sqlalchemy", "pylint_flask"],
   "python.formatting.provider": "black",
   "python.formatting.blackArgs": ["--line-length", "79"],
-  "python.sortImports.path": "",
-  "python.sortImports.args": [
-    "--lines-between-types",
-    "1",
-    "--lines-after-imports",
-    "2",
-    "--line-length",
-    "79",
-    "--multi-line",
-    "3",
-    "--trailing-comma"
-  ],
+  "isort.args": ["--profile", "black"],
   "terminal.integrated.profiles.linux": {
     "zsh": {
       "path": "/bin/zsh"
@@ -152,6 +141,9 @@
   "gitlens.mode.active": "zen",
   "terminal.integrated.shellIntegration.enabled": true,
   "workbench.colorTheme": "Penumbra Dark",
+  "workbench.colorCustomizations": {
+    "gitDecoration.ignoredResourceForeground": "#555"
+  },
   "asciidoc.use_kroki": true,
   "terraform.languageServer.enable": true,
   "terraform.languageServer.path": "",
