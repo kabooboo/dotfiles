@@ -23,6 +23,7 @@ set $term gnome-terminal
 # set $menu rofi -show drun -monitor $(swaymsg -t get_outputs | jq '. | reverse | to_entries | .[] | select(.value.focused == true) | .key')
 set $menu rofi -show drun -monitor -1 
 
+
 include /etc/sway/config-vars.d/*
 
 ### Output configuration
@@ -356,5 +357,5 @@ include /etc/sway/config.d/*
 ## Init
 exec mako
 exec ~/.config/sway/xdg-desktop
-exec_always ~/.config/sway/start-gclip
-# exec_always autotiling
+exec ~/.config/sway/start-gclip
+exec autotiling  --limit 3 --events MODE WINDOW_CLOSE WINDOW_FLOATING WINDOW_FULLSCREEN_MODE WINDOW_MARK WINDOW_TITLE
