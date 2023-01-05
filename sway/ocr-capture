@@ -1,0 +1,8 @@
+#!/bin/bash
+tmpfile=$(mktemp)
+grim -g "$(slurp -d)" - > $tmpfile
+gcloud \
+  ml vision detect-text $tmpfile \
+  | jq -r  '.responses[].fullTextAnnotation.text' \
+  | wl-copy
+notify-send --expire-time 1500 "OCR copied to clipboard!"

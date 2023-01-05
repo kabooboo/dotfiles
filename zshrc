@@ -116,7 +116,7 @@ alias d=docker
 alias copy=wl-copy
 alias bctl=bluetoothctl
 alias giphon="/usr/bin/env python3 -m giphon"
-alias deploy="glab ci run -b $(git rev-parse --abbrev-ref HEAD) --variables-env deploy_only:t"
+alias deploy='eval glab ci run -b $(git rev-parse --abbrev-ref HEAD) --variables-env deploy_only:t'
 
 ## Completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
