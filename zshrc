@@ -177,17 +177,15 @@ function tfswitch {
 }
 
 function bridge {
-
-nohup gcloud compute start-iap-tunnel  --quiet \
+  nohup gcloud compute start-iap-tunnel  --quiet \
     shared-platforms-bastion 5432 \
     --project heka-asterix-$1 \
     --zone europe-west1-b \
     --local-host-port=0.0.0.0:5432 & disown
-
 }
 
 function update_cost_center {
-gsutil cp $HOME/Documents/finops/project_cost_center.csv gs://finops_constants_ingest/project_cost_center.csv
+  gsutil cp $HOME/Documents/finops/project_cost_center.csv gs://finops_constants_ingest/project_cost_center.csv
 }
 
 function totp {
