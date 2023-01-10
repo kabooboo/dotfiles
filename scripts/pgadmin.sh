@@ -17,7 +17,7 @@ if [ ! "$(docker ps -q -f name=pgadmin4)" ]; then
       -e "PGADMIN_LISTEN_PORT=5050" \
       -e "PGADMIN_LISTEN_ADDRESS=0.0.0.0" \
       -e "PGADMIN_CONFIG_SERVER_MODE=False" \
-      -e "PGADMIN_DEFAULT_EMAIL=***REMOVED***" \
+      -e "PGADMIN_DEFAULT_EMAIL=me@kaboo.boo" \
       -e "PGADMIN_DEFAULT_PASSWORD=toto" \
       -e "MASTER_PASSWORD_REQUIRED=false" \
       -d \
