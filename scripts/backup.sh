@@ -28,7 +28,7 @@ for file in ${HOME}/Backups/ankh/*; do
   echo "Encrypting backup ${file}..."
   gpg --batch --yes \
   --output "${file}.gpg" \
-  --encrypt --recipient kabooboo \
+  --encrypt --recipient me@kaboo.boo \
   "${file}"
   rm $file
 done;

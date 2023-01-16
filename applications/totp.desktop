@@ -2,6 +2,6 @@
 Comment=Launch kpmenu
 Terminal=false
 Name=TOTP
-Exec=kpmenu
+Exec=kpmenu --customPromptFields 'echo Generate OTP'
 Type=Application
 Icon=keepassxc
