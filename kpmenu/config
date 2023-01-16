@@ -2,7 +2,7 @@
 # You can store it into $HOME/.config/kpmenu/config
 [general]
 # Supported: dmenu, rofi, wofi, custom
-Menu = "rofi"
+Menu = "custom"
 # Supported: xsel, wl-clipboard, custom
 ClipboardTool = "wl-clipboard"
 ClipboardTimeout = 15
@@ -13,21 +13,21 @@ NoOTP = false
 
 [executable]
 # Executable of menus used to prompt actions
-#CustomPromptPassword = 
+CustomPromptPassword = "rofi -i -dmenu -p '🔒 Password' -password"
 CustomPromptMenu = "echo 0"
-#CustomPromptEntries = 
-#CustomPromptFields = 
+CustomPromptEntries = "rofi -i -dmenu -p '👉 Entry'"
+# CustomPromptFields = "echo Generate OTP"
 # Executable of clipboard commands
-#CustomClipboardCopy = 
-#CustomClipboardPaste = 
-#CustomClipboardClean = 
+#CustomClipboardCopy =
+#CustomClipboardPaste =
+#CustomClipboardClean =
 
 [style]
 PasswordBackground = "black"
-TextPassword = "🔒 Password"
-TextMenu = "Select"
-TextEntry = "👉 Entry"
-TextField = "🤫 Field"
+#TextPassword =
+#TextMenu =
+#TextEntry =
+#TextField =
 FormatEntry = "{Title} - {UserName}"
 #ArgsPassword =
 #ArgsMenu =
@@ -38,6 +38,6 @@ FormatEntry = "{Title} - {UserName}"
 Database = "/home/gcreti/.secrets/PasswordsPerso.kdbx"
 #KeyFile =
 #Password =
-FieldOrder = "Password UserName URL"
+FieldOrder = "Password UserName"
 FillOtherFields = true
 #FillBlacklist =
