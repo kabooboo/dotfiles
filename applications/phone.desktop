@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Launch scrcpy
+Terminal=false
+Name=Phone
+Exec=scrcpy
+Type=Application
+Icon=scrcpy
