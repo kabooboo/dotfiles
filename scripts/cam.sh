@@ -1,18 +1,21 @@
-sudo modprobe -r v4l2loopback
+function unlock() {
+  adb shell input keyevent 26
+}
 
-sudo modprobe v4l2loopback exclusive_caps=1
+PHONE_IP="$(arp -a | grep $PHONE_MAC | sed -nr 's/.*\((.+)\).*/\1/p')"
+
+echo "Found phone IP: ${PHONE_IP}"
+
+adb connect $PHONE_IP:5555
 
 SCREEN_STATE=$(adb shell dumpsys nfc | grep -E 'mScreenState=' | sed 's/mScreenState=//g')
 
-[[ "$SCREEN_STATE" = "OFF_LOCKED" ]] && adb shell input keyevent 26
+[ "$SCREEN_STATE" = "OFF_LOCKED" ] && unlock
 
-adb shell am start \
-  -n com.android.camera/com.android.camera.VideoCamera \
-  --ei android.intent.extras.CAMERA_FACING 1 \
-  -a android.media.action.VIDEO_CAPTURE
+adb shell am start -n com.dev47apps.droidcamx/.DroidCamX
 
-scrcpy --lock-video-orientation=0 --v4l2-sink=/dev/video2 -N \
-  --stay-awake \
-#  --power-off-on-close \
-#  --crop 1080:1490:0:290
+sleep 2
 
+droidcam-cli adb 4747
+
+adb shell input keyevent 26
