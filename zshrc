@@ -1,4 +1,3 @@
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -125,6 +124,7 @@ source <(kubectl completion zsh)
 source <(k completion zsh)
 source <(glab completion -s zsh)
 compdef _glab glab
+source <(stern --completion=zsh)
 
 ## Functions
 # Open Heka platform as an admin
@@ -210,3 +210,6 @@ source ~/.secrets/uris.sh
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
