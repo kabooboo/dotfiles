@@ -22,16 +22,17 @@ SCREEN_STATE=$(adb shell dumpsys nfc | grep -E 'mScreenState=' | sed 's/mScreenS
 
 [ "$SCREEN_STATE" = "OFF_LOCKED" ] && unlock
 
-adb shell am start -n com.dev47apps.droidcamx/.DroidCamX
+adb shell am start \
+  -n com.android.camera/com.android.camera.VideoCamera \
+  --ei android.intent.extras.CAMERA_FACING 0 \
+  -a android.media.action.VIDEO_CAPTURE
 
-sleep 2
 
-# Start droidcam infinitely until it starts properly
-while true; do
-  droidcam-cli -nocontrols adb 4747 2>&1 | while read LOGLINE
-  do
-    [[ "${LOGLINE}" == *"Error: Connection reset!"* ]] && pkill -P $$ droidcam-cli
-  done
-  sleep 2
-  echo "Droidcam failed (Error: Connection reset!). Restarting!"
-done
+# sudo modprobe -r v4l2loopback
+
+# sudo modprobe v4l2loopback exclusive_caps=1 video_nr=5 card_label="Phone Camera"
+
+
+scrcpy --lock-video-orientation=0 --v4l2-sink=/dev/video6 -N \
+  --stay-awake \
+ --crop 1490:900:0:900

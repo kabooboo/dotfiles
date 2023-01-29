@@ -192,6 +192,11 @@ function totp {
   keepassxc-cli clip --totp $HOME/.secrets/PasswordsPerso.kdbx $1
 }
 
+function color_grep {
+  COLOR=$1
+  shift;
+  GREP_COLORS="mt=${COLOR}" grep "$@"
+}
 
 ## Exports
 
@@ -200,6 +205,13 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export PATH=$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin
 export GOPATH=$HOME/.go
 export NVM_DIR="$HOME/.nvm"
+
+### Some colors for grep
+export RED="01;31"
+export GREEN="01;32"
+export YELLOW="01;33"
+export BLUE="01;34"
+export TEAL="01;36"
 
 
 ## Sources
