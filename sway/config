@@ -32,7 +32,7 @@ include /etc/sway/config-vars.d/*
 output * bg /home/gcreti/Pictures/Papes/vapor/1633500163458.png fill
 
 output eDP-1 {
-  pos  0 1080
+  pos  320 1440
 }
 
 output DP-2 {

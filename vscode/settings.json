@@ -147,5 +147,6 @@
   "asciidoc.use_kroki": true,
   "terraform.languageServer.enable": true,
   "terraform.languageServer.path": "",
-  "terraform.experimentalFeatures.validateOnSave": true
+  "terraform.experimentalFeatures.validateOnSave": true,
+  "window.zoomLevel": -1
 }
