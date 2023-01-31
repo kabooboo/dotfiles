@@ -198,6 +198,9 @@ function color_grep {
   GREP_COLORS="mt=${COLOR}" grep "$@"
 }
 
+function carbonyl {
+  docker run -ti fathyb/carbonyl "$@"
+}
 ## Exports
 
 export EDITOR=nano
