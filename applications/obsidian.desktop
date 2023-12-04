@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=Launch Obsidian
+Terminal=false
+Name=Obsidian
+Exec=/usr/local/bin/obsidian
+Type=Application
+Icon=obsidian
+MimeType=x-scheme-handler/obsidian;text/html;

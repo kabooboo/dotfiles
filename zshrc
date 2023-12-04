@@ -4,9 +4,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="spaceship"
-SPACESHIP_KUBECTL_SHOW=true
-SPACESHIP_KUBECTL_VERSION_SHOW=false
+# ZSH_THEME="spaceship"
+# SPACESHIP_KUBECTL_SHOW=true
+# SPACESHIP_KUBECTL_VERSION_SHOW=false
 
 autoload -Uz compinit; compinit
 
@@ -112,6 +112,8 @@ alias ktx=kubectx
 alias kns=kubens
 alias dc="docker compose"
 alias d=docker
+alias dk="docker kill $(docker ps -q)"
+alias drm="docker rm $(docker ps -aq)"
 alias copy=wl-copy
 alias bctl=bluetoothctl
 alias giphon="/usr/bin/env python3 -m giphon"
@@ -132,7 +134,7 @@ function heka-open-admin() {
   protocol=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.protocol')
   hostname=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.hostname')
   prefix_path=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.network."prefix-path"')
-  kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.authentication.inhouse.administrator.password' | wl-copy
+  kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.authentication.inhouse.administrator.password'
   echo "${protocol}://${hostname}${prefix_path}admin"
   /opt/google/chrome/chrome "${protocol}://${hostname}${prefix_path}admin"
 }
@@ -144,19 +146,45 @@ function tard {
 function archive-buckets() {
   (gsutil label get gs://heka-$2-$1-backups | grep -q archived_since) && echo "Bucket is already labelled" || gsutil label ch -l archived_since:$(date +%s) gs://heka-$2-$1-backups
   (gsutil label get gs://heka-$2-$1-storage | grep -q archived_since) && echo "Bucket is already labelled" || gsutil label ch -l archived_since:$(date +%s) gs://heka-$2-$1-storage
+
+  echo -e "\033[1;36mlatest backups by date:"
+  gsutil ls -lah gs://heka-$2-$1-backups/ | sort -k 2
+  echo -e "\033[0m\n\n"
+
+  echo "Changing default storage class"
   gsutil defstorageclass set ARCHIVE gs://heka-$2-$1-backups
   gsutil defstorageclass set ARCHIVE gs://heka-$2-$1-storage
+
+  echo "Archiving all files..."
   gsutil -m rewrite -Ors ARCHIVE "gs://heka-$2-$1-storage/"
   gsutil -m rewrite -Ors ARCHIVE "gs://heka-$2-$1-backups/"
+
+  echo "Removing users from $2-$1-backups Bucket's permission..."
+  users=$(gsutil iam get gs://heka-$2-$1-backups  | jq -r '.bindings[].members[] ' | sort | uniq | grep "user:")
+  echo "${users}"
+  echo "${users}" | xargs -r -I % gsutil iam ch -d % gs://heka-$2-$1-backups
+  echo "Removing users from $2-$1-storage Bucket's permission..."
+  users=$(gsutil iam get gs://heka-$2-$1-storage  | jq -r '.bindings[].members[] ' | sort | uniq | grep "user:")
+  echo "${users}"
+  echo "${users}" | xargs -r -I % gsutil iam ch -d % gs://heka-$2-$1-storage
+
+}
+
+function edit_state {
+  PROJECT_ID=${2:-:id}
+  TEMP=$(mktemp)
+  glab api "/projects/${PROJECT_ID}/terraform/state/$1" > $TEMP
+  sh -c "$EDITOR $TEMP"
+  glab api -X POST --input $TEMP "/projects/${PROJECT_ID}/terraform/state/$1"
+  rm $TEMP
 }
 
 function rollback_state {
 
     CURRENT_VERSION=$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3" | jq -r '.serial')
+    curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" > /tmp/rbstt 
     curl -X POST -H 'content-type:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
-      --data "$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" )" \
-      "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3"
-
+      --data @/tmp/rbstt "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3"
 }
 
 function use_common_cluster {
@@ -203,9 +231,10 @@ function carbonyl {
 }
 ## Exports
 
-export EDITOR=nano
+export EDITOR="code --wait"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export PATH=$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin
+export MODULAR_HOME="$HOME/.modular"
+export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin"
 export GOPATH=$HOME/.go
 export NVM_DIR="$HOME/.nvm"
 
@@ -228,3 +257,48 @@ source ~/.secrets/uris.sh
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+eval "$(starship init zsh)"
+
+
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
+
+# bun completions
+[ -s "/home/gcreti/.oh-my-zsh/completions/_bun" ] && source "/home/gcreti/.oh-my-zsh/completions/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+# JINA_CLI_BEGIN
+
+## autocomplete
+if [[ ! -o interactive ]]; then
+    return
+fi
+
+compctl -K _jina jina
+
+_jina() {
+  local words completions
+  read -cA words
+
+  if [ "${#words}" -eq 2 ]; then
+    completions="$(jina commands)"
+  else
+    completions="$(jina completions ${words[2,-2]})"
+  fi
+
+  reply=(${(ps:
+:)completions})
+}
+
+# session-wise fix
+ulimit -n 4096
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# JINA_CLI_END
+
+
+
