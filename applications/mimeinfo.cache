@@ -1,1 +1,3 @@
 [MIME Cache]
+text/html=obsidian.desktop;
+x-scheme-handler/obsidian=obsidian.desktop;

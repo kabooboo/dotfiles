@@ -19,12 +19,21 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+  "[go]": {
+    "editor.rulers": [100],
+    "editor.insertSpaces": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "editor.suggest.snippetsPreventQuickSuggestions": false
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
   "[yaml]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
   "[helm]": {
     "editor.defaultFormatter": "Tim-Koehler.helm-intellisense",
@@ -34,6 +43,9 @@
     "editor.formatOnSave": false
   },
   "[dockerfile]": {
+    "editor.formatOnSave": false
+  },
+  "[dockercompose]": {
     "editor.formatOnSave": false
   },
   "[xml]": {
@@ -49,7 +61,7 @@
   },
   "[markdown]": {
     "editor.rulers": [79],
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[html]": {
@@ -66,21 +78,16 @@
     "editor.rulers": [79],
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    }
+      "source.organizeImports.ruff": true
+    },
+
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "prettier.printWidth": 120,
   // Python
-  "python.defaultInterpreterPath": "/usr/bin/python3",
-  "python.linting.banditEnabled": true,
-  "python.linting.banditArgs": ["-c", "pyproject.toml"],
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8Args": ["--max-line-length=79", "--ignore=E203,W503"],
-  "python.linting.pylintEnabled": true,
-  "python.linting.pylintArgs": ["--load-plugins", "pytest_pylint", "pylint_flask_sqlalchemy", "pylint_flask"],
-  "python.formatting.provider": "black",
-  "python.formatting.blackArgs": ["--line-length", "79"],
-  "isort.args": ["--profile", "black"],
+  "python.defaultInterpreterPath": "/home/gcreti/.pyenv/shims/python3",
+  "python.terminal.activateEnvironment": false,
+  "ruff.enable": true,
   "terminal.integrated.profiles.linux": {
     "zsh": {
       "path": "/bin/zsh"
@@ -95,7 +102,6 @@
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.fontSize": 12,
-  "liveshare.presence": true,
   "git.confirmSync": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmDelete": false,
@@ -124,7 +130,8 @@
     "checkForMinikubeUpgrade": true,
     "logsDisplay": "webview",
     "imageBuildTool": "Docker",
-    "vs-kubernetes.crd-code-completion": "disabled"
+    "vs-kubernetes.crd-code-completion": "disabled",
+    "vs-kubernetes.ignore-recommendations": true
   },
   "files.exclude": {
     "__pycache__": true,
@@ -144,9 +151,14 @@
   "workbench.colorCustomizations": {
     "gitDecoration.ignoredResourceForeground": "#555"
   },
-  "asciidoc.use_kroki": true,
   "terraform.languageServer.enable": true,
   "terraform.languageServer.path": "",
   "terraform.experimentalFeatures.validateOnSave": true,
-  "window.zoomLevel": -1
+  "files.associations": {
+    "*.gotmpl": "gotemplate"
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "black-formatter.args": ["--line-length=79"],
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "window.zoomLevel": 2
 }
