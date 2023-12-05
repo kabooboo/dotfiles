@@ -44,7 +44,7 @@ bindsym $mod+e exec nautilus
 # bindsym $mod+c exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)
 
 # Bind the screen capture
-bindsym Control+$alt+c exec flameshot gui -c
+bindsym Control+$alt+c exec maim -s | xclip -sel clipboard -t image/png
 bindsym Control+$alt+Shift+c exec bash ~/.config/i3/ocr-capture
 
 # Brightness
