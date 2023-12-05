@@ -8,5 +8,5 @@ gcloud \
   ml vision detect-text $tmpfile \
   --project="$GCP_PROJECT_FOR_VISION" \
   | jq -r  '.responses[].fullTextAnnotation.text' \
-  | wl-copy
+  | xclip -selection clipboard -o
 notify-send --expire-time 1500 "OCR copied to clipboard!"

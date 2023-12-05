@@ -4,7 +4,7 @@
 # Supported: dmenu, rofi, wofi, custom
 Menu = "custom"
 # Supported: xsel, wl-clipboard, custom
-ClipboardTool = "wl-clipboard"
+ClipboardTool = "xsel"
 ClipboardTimeout = 15
 NoCache = false
 CacheOneTime = false
