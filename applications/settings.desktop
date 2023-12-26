@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Gnome Control Center
+Terminal=false
+Name=Settings
+Exec= env XDG_CURRENT_DESKTOP=GNOME /usr/bin/gnome-control-center
+Type=Application
+Icon=gnome-control-center

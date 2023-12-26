@@ -114,7 +114,7 @@ alias dc="docker compose"
 alias d=docker
 alias dk="docker kill $(docker ps -q)"
 alias drm="docker rm $(docker ps -aq)"
-alias copy=wl-copy
+alias copy="xclip -selection clipboard"
 alias bctl=bluetoothctl
 alias giphon="/usr/bin/env python3 -m giphon"
 alias deploy='eval glab ci run -b $(git rev-parse --abbrev-ref HEAD) --variables-env deploy_only:t'
@@ -134,7 +134,7 @@ function heka-open-admin() {
   protocol=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.protocol')
   hostname=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.project.hostname')
   prefix_path=$(kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.network."prefix-path"')
-  kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.authentication.inhouse.administrator.password'
+  kubectl $([ ! -z "$2" ] && echo "--context heka-asterix-$2") get secrets project-environment $([ ! -z "$1" ] && echo "--namespace heka-$1") -o yaml | yq '.data.PROJECT_CONFIG' | base64 -d | yq '.authentication.inhouse.administrator.password' | copy
   echo "${protocol}://${hostname}${prefix_path}admin"
   /opt/google/chrome/chrome "${protocol}://${hostname}${prefix_path}admin"
 }
@@ -182,7 +182,7 @@ function edit_state {
 function rollback_state {
 
     CURRENT_VERSION=$(curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3" | jq -r '.serial')
-    curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" > /tmp/rbstt 
+    curl -ssX GET -H 'accept:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3/versions/$2" | jq ".serial=$((CURRENT_VERSION + 1))" > /tmp/rbstt
     curl -X POST -H 'content-type:application/json' -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
       --data @/tmp/rbstt "${GITLAB_URL}/api/v4/projects/$1/terraform/state/env-$3"
 }
