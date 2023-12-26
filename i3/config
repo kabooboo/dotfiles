@@ -9,9 +9,11 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-exec_always feh --bg-fill /home/gcreti/Pictures/Papes/vapor/1633500163458.png
-exec_always --no-startup-id ~/.screenlayout/autoxrandr.sh
+exec_always --no-startup-id feh --bg-fill /home/gcreti/Pictures/Papes/Pic/mtn.jpg
+# exec_always --no-startup-id ~/.screenlayout/autoxrandr.sh
+exec_always --no-startup-id ~/.screenlayout/home.sh
 exec_always --no-startup-id picom  -b --config $HOME/.config/picom/picom.conf
+exec_always --no-startup-id /usr/local/bin/autotiling
 
 set $mod Mod4
 set $alt Mod1
@@ -33,7 +35,7 @@ font pango:DejaVu Sans Mono 8
 floating_modifier $mod
 
 # start a terminal
-bindsym Control+$alt+T exec i3-sensible-terminal
+bindsym Control+$alt+T exec --no-startup-id i3-sensible-terminal
 
 # kill focused window
 bindsym $alt+F4 kill
@@ -44,17 +46,17 @@ bindsym $mod+e exec nautilus
 # bindsym $mod+c exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)
 
 # Bind the screen capture
-bindsym Control+$alt+c exec maim -s | xclip -sel clipboard -t image/png
-bindsym Control+$alt+Shift+c exec bash ~/.config/i3/ocr-capture
+bindsym Control+$alt+c exec --no-startup-id maim -s | xclip -sel clipboard -t image/png
+bindsym Control+$alt+Shift+c exec --no-startup-id bash ~/.config/i3/ocr-capture
 
 # Brightness
-bindsym XF86MonBrightnessUp exec sudo brightnessctl set 5%+
-bindsym XF86MonBrightnessDown exec sudo brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id sudo brightnessctl set 5%+
+bindsym XF86MonBrightnessDownR exec --no-startup-id sudo brightnessctl set 5%-
 
 # Volume
-bindsym XF86AudioMute exec amixer sset 'Master' toggle
-bindsym XF86AudioLowerVolume exec amixer sset 'Master' 5%-
-bindsym XF86AudioRaiseVolume exec amixer sset 'Master' 5%+
+bindsym XF86AudioMute exec --no-startup-id amixer sset 'Master' toggle
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset 'Master' 5%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset 'Master' 5%+
 
 
 # Reload config
@@ -68,9 +70,14 @@ focus_follows_mouse no
 
 bindsym $mod+l exec i3lock
 
+
 # Change focus between previous and next
-bindsym $alt+tab focus next
-bindsym $alt+Shift+tab focus prev
+bindsym $alt+Tab focus next
+bindsym $alt+Shift+Tab focus prev
+
+# Workspace tabing
+bindsym $mod+Tab exec --no-startup-id $HOME/.config/i3/mod_tab_next
+bindsym $mod+Control+Tab exec --no-startup-id $HOME/.config/i3/mod_tab_next --move
 
 # Move your focus around
 bindsym $mod+Left focus left
@@ -85,7 +92,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+b split h
+bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
@@ -127,6 +134,17 @@ bindsym $mod+2 workspace $ws2
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
 
+workspace $ws1 output eDP-1
+workspace $ws2 output eDP-1
+workspace $ws3 output DP-2
+workspace $ws4 output DP-2
+workspace $ws5 output DP-3
+workspace $ws6 output DP-3
+workspace $ws7 output DP-4
+workspace $ws8 output DP-4
+workspace $ws9 output DP-5
+workspace $ws10 output DP-5
+
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -144,6 +162,12 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+# lid close
+
+bindswitch --locked lid:on output eDP-1 disable
+bindswitch --locked lid:off output eDP-1 enable
+
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -169,5 +193,5 @@ bar {
 for_window [class="^.*"] border pixel 0
 
 # Gaps
-gaps inner 4
-gaps outer 3
+gaps inner 12
+gaps outer 0
