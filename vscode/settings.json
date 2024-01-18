@@ -9,7 +9,7 @@
   "git.autofetch": true,
   "git.enableSmartCommit": true,
   "breadcrumbs.enabled": true,
-  "window.menuBarVisibility": "toggle",
+  "window.menuBarVisibility": "compact",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.list.openMode": "doubleClick",
   "files.trimTrailingWhitespace": true,
@@ -160,5 +160,7 @@
   "git.openRepositoryInParentFolders": "never",
   "black-formatter.args": ["--line-length=79"],
   "editor.unicodeHighlight.invisibleCharacters": false,
-  "window.zoomLevel": 1
+  "window.zoomLevel": 1,
+  "editor.inlineSuggest.suppressSuggestions": true,
+  "extensions.ignoreRecommendations": true
 }

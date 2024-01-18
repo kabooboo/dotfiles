@@ -118,6 +118,8 @@ alias copy="xclip -selection clipboard"
 alias bctl=bluetoothctl
 alias giphon="/usr/bin/env python3 -m giphon"
 alias deploy='eval glab ci run -b $(git rev-parse --abbrev-ref HEAD) --variables-env deploy_only:t'
+alias who-did-it='baraddur scan -j who-did-it -w 30'
+alias code='code --password-store=gnome-libsecret'
 
 ## Completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -231,7 +233,7 @@ function carbonyl {
 }
 ## Exports
 
-export EDITOR="code --wait"
+export EDITOR="nano"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin"
