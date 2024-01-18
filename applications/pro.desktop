@@ -2,6 +2,6 @@
 Comment=Chrome pro profile
 Terminal=false
 Name=Pro
-Exec=/opt/google/chrome/chrome --use-cmd-decoder=validating --use-gl=desktop --restore-last-session --profile-directory=Default 
+Exec=/opt/google/chrome/chrome --use-cmd-decoder=validating --use-gl=desktop --restore-last-session --profile-directory=Default --password-store=basic
 Type=Application
 Icon=google-chrome
