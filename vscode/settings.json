@@ -160,7 +160,6 @@
   "git.openRepositoryInParentFolders": "never",
   "black-formatter.args": ["--line-length=79"],
   "editor.unicodeHighlight.invisibleCharacters": false,
-  "window.zoomLevel": 1,
   "editor.inlineSuggest.suppressSuggestions": true,
   "extensions.ignoreRecommendations": true
 }

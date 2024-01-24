@@ -117,14 +117,16 @@ bindsym $mod+a focus parent
 #
 set $ws1 Pro
 set $ws2 Perso
-set $ws3 Pro-2
-set $ws4 Perso-2
-set $ws5 Pro-3
-set $ws6 Perso-3
-set $ws7 Pro-4
-set $ws8 Perso-4
-set $ws9 Pro-5
-set $ws10 Perso-5
+set $ws3 Pro-1
+set $ws4 Perso-1
+set $ws5 Pro-2
+set $ws6 Perso-2
+set $ws7 Pro-3
+set $ws8 Perso-3
+set $ws9 Pro-4
+set $ws10 Perso-4
+set $ws11 Pro-5
+set $ws12 Perso-5
 
 # Switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -136,14 +138,16 @@ bindsym $mod+Shift+2 move container to workspace $ws2
 
 workspace $ws1 output eDP-1
 workspace $ws2 output eDP-1
-workspace $ws3 output DP-2
-workspace $ws4 output DP-2
-workspace $ws5 output DP-3
-workspace $ws6 output DP-3
-workspace $ws7 output DP-4
-workspace $ws8 output DP-4
-workspace $ws9 output DP-5
-workspace $ws10 output DP-5
+workspace $ws3 output DP-1
+workspace $ws4 output DP-1
+workspace $ws5 output DP-2
+workspace $ws6 output DP-2
+workspace $ws7 output DP-3
+workspace $ws8 output DP-3
+workspace $ws9 output DP-4
+workspace $ws10 output DP-4
+workspace $ws11 output DP-5
+workspace $ws12 output DP-5
 
 
 # resize window (you can also use the mouse for that)

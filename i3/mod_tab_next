@@ -3,6 +3,7 @@
 args=("$@")
 
 edp1_ws="Pro Perso"
+dp1_ws="Pro-1 Perso-1"
 dp2_ws="Pro-2 Perso-2"
 dp3_ws="Pro-3 Perso-3"
 dp4_ws="Pro-4 Perso-4"
@@ -11,6 +12,7 @@ dp5_ws="Pro-5 Perso-5"
 declare -A OUTPUTS
 
 OUTPUTS[eDP-1]="${edp1_ws}"
+OUTPUTS[DP-1]="${dp1_ws}"
 OUTPUTS[DP-2]="${dp2_ws}"
 OUTPUTS[DP-3]="${dp3_ws}"
 OUTPUTS[DP-4]="${dp4_ws}"
