@@ -14,6 +14,7 @@ exec_always --no-startup-id feh --bg-fill /home/gcreti/Pictures/Papes/Pic/mtn.jp
 exec_always --no-startup-id ~/.screenlayout/autoxrandr.sh
 #exec_always --no-startup-id ~/.screenlayout/home.sh
 exec_always --no-startup-id picom -b --config $HOME/.config/picom/picom.conf
+exec_always --no-startup-id /usr/bin/xmousepasteblock
 
 set $mod Mod4
 set $alt Mod1
