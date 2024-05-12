@@ -51,6 +51,9 @@
   "[xml]": {
     "editor.formatOnSave": false
   },
+  "[toml]": {
+    "editor.formatOnSave": false
+  },
   "[json]": {
     "editor.formatOnSave": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -162,5 +165,6 @@
   "black-formatter.args": ["--line-length=79"],
   "editor.unicodeHighlight.invisibleCharacters": false,
   "editor.inlineSuggest.suppressSuggestions": true,
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+  "window.zoomLevel": 1
 }

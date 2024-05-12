@@ -21,7 +21,7 @@ if [ ! "$(docker ps -q -f name=pgadmin4)" ]; then
       -e "PGADMIN_DEFAULT_PASSWORD=toto" \
       -e "MASTER_PASSWORD_REQUIRED=false" \
       -d \
-      dpage/pgadmin4:6.15
+      dpage/pgadmin4:8
     sleep 6
 fi
 /opt/google/chrome/chrome http://localhost:5050
