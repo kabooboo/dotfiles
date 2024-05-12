@@ -1,0 +1,7 @@
+[Desktop Entry]
+Comment=Use the bluetooth app overskride
+Terminal=false
+Name=Bluetooth
+Exec=flatpak run io.github.kaii_lb.Overskride
+Type=Application
+Icon=bluetooth

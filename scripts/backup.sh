@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DRIVE_BACKUPS_DIR="1f2B8VTBIUg3rijL3kXt-da9XfOdIpKFs"
+DRIVE_BACKUPS_DIR="1SL0CzqKrB_yKC_NXfVpwUC3kylxApOHE"
 
 declare -a TARGET_DIRS=(
   "Desktop"
@@ -33,8 +33,5 @@ for file in ${HOME}/Backups/ankh/*; do
   rm $file
 done;
 
-
-for file in ${HOME}/Backups/ankh/*; do
-  [[ $file == *.gpg ]] || continue
-  gdrive upload --parent "${DRIVE_BACKUPS_DIR}" $file
-done;
+gdrive sync upload ${HOME}/Backups/ankh "${DRIVE_BACKUPS_DIR}"
+rsync -r ${HOME}/Backups/ankh /mnt/external/backups/ankh/ || true

@@ -1,7 +1,0 @@
-[Desktop Entry]
-Comment=Open phone camera
-Terminal=false
-Name=Camera
-Exec=gnome-terminal -- zsh /home/gcreti/.dotfiles/scripts/cam.sh
-Type=Application
-Icon=camera
