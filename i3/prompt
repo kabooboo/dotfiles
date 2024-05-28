@@ -1,0 +1,60 @@
+#!/bin/bash
+source $HOME/.secrets/credentials.sh
+
+time_buffered_xargs_copy_paste () {
+   delay=$1
+   while read line; do
+       printf "%d %s\n" "$(date +%s)" "$line"
+   done | while read ts line; do
+       now=$(date +%s)
+       if (( now - ts < delay)); then
+           sleep $(( now - ts ))
+       fi
+       echo "$line" | xclip -sel clipboard \
+       && xdotool key --clearmodifiers ctrl+v
+   done
+}
+
+export SEL=$(xsel -o | sed ':a;N;$!ba;s%\n%\\\\n%g')
+
+
+echo -e "prompt: ${SEL}" >> /tmp/prompt.log
+
+sleep 1
+
+curl -N "https://api.openai.com/v1/chat/completions" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" -d '{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "You are a CLI terminal assistant."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "'"$SEL"'"
+        }
+      ]
+    }
+
+  ],
+  "temperature": 0.1,
+  "max_tokens": 1000,
+  "top_p": 1,
+  "frequency_penalty": 0,
+  "presence_penalty": 0,
+  "stream": true
+}' \
+ | sed -u 's%data: %%g' \
+ | jq --unbuffered -jr '.choices[0].delta.content // empty' 2> /dev/null \
+ | time_buffered_xargs_copy_paste 1

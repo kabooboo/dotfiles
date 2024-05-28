@@ -17,11 +17,15 @@ declare -a TARGET_DIRS=(
 
 cd "${HOME}"
 
+for ARCHIVE in Archives/*; do
+  echo "Backing up archive ${ARCHIVE}..."
+  ln -fs "${HOME}/${ARCHIVE}" "${HOME}/Backups/ankh/archive-$(basename ${ARCHIVE})"
+done
+
 for DIR in ${TARGET_DIRS[@]}; do
   echo "Backing up ${DIR}..."
   tar -czf "./Backups/ankh/${DIR/./}.tar.gz"  "./${DIR}"
 done
-
 
 for file in ${HOME}/Backups/ankh/*; do
   [[ $file != *.gpg ]] || continue
@@ -34,4 +38,4 @@ for file in ${HOME}/Backups/ankh/*; do
 done;
 
 gdrive sync upload ${HOME}/Backups/ankh "${DRIVE_BACKUPS_DIR}"
-rsync -r ${HOME}/Backups/ankh /mnt/external/backups/ankh/ || true
+rsync -Lr ${HOME}/Backups/ankh /mnt/external/backups/ankh/ || true

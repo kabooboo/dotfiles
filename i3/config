@@ -49,6 +49,8 @@ bindsym $mod+e exec nautilus
 # Bind the screen capture
 bindsym Control+$alt+c exec --no-startup-id maim -s | xclip -sel clipboard -t image/png
 bindsym Control+$alt+Shift+c exec --no-startup-id bash ~/.config/i3/ocr-capture
+bindsym $mod+Shift+o exec --no-startup-id $HOME/.config/i3/prompt
+
 
 # Brightness
 bindsym XF86MonBrightnessUp exec --no-startup-id sudo brightnessctl set 5%+

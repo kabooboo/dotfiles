@@ -260,6 +260,60 @@ function unmount_disk {
   sudo cryptsetup close external
 }
 
+time_buffered_echo () {
+   delay=$1
+   while read line; do
+       printf "%d %s\n" "$(date +%s)" "$line"
+   done | while read ts line; do
+       now=$(date +%s)
+       if (( now - ts < delay)); then
+           sleep $(( now - ts ))
+       fi
+       echo -e "$line"
+   done
+}
+
+
+function openai {
+
+curl -N "https://api.openai.com/v1/chat/completions" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" -d '{
+  "model": "gpt-4o",
+  "messages": [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "You are a CLI terminal assistant."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "'"$1"'"
+        }
+      ]
+    }
+
+  ],
+  "temperature": 0.1,
+  "max_tokens": 1000,
+  "top_p": 1,
+  "frequency_penalty": 0,
+  "presence_penalty": 0,
+  "stream": true
+}' \
+ | sed -u 's%data: %%g' \
+ | jq --unbuffered -jr '.choices[0].delta.content // empty' 2> /dev/null \
+ | time_buffered_echo 1
+}
+
 ## Exports
 
 export EDITOR="nano"
