@@ -166,5 +166,6 @@
   "editor.unicodeHighlight.invisibleCharacters": false,
   "editor.inlineSuggest.suppressSuggestions": true,
   "extensions.ignoreRecommendations": true,
-  "window.zoomLevel": 1
+  "window.zoomLevel": 1,
+  "update.showReleaseNotes": false
 }
