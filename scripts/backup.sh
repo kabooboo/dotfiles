@@ -39,3 +39,4 @@ done;
 
 gdrive sync upload ${HOME}/Backups/ankh "${DRIVE_BACKUPS_DIR}"
 rsync -Lr ${HOME}/Backups/ankh /mnt/external/backups/ankh/ || true
+rm -f ${HOME}/Backups/ankh/*.gpg

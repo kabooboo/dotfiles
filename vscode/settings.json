@@ -79,12 +79,8 @@
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
     "editor.rulers": [79],
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports.ruff": "explicit"
-    },
+    "editor.formatOnSave": false,
 
-    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "prettier.printWidth": 120,
   // Python
@@ -162,7 +158,6 @@
     "*.gotmpl": "gotemplate"
   },
   "git.openRepositoryInParentFolders": "never",
-  "black-formatter.args": ["--line-length=79"],
   "editor.unicodeHighlight.invisibleCharacters": false,
   "editor.inlineSuggest.suppressSuggestions": true,
   "extensions.ignoreRecommendations": true,
