@@ -2,6 +2,6 @@
 Comment=Chrome perso profile
 Terminal=false
 Name=Perso
-Exec=/opt/google/chrome/chrome --restore-last-session --profile-directory="Profile 2"  --password-store=basic
+Exec=/opt/google/chrome/chrome --restore-last-session --profile-directory="Profile 1"  --password-store=basic
 Type=Application
 Icon=google-chrome

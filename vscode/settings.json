@@ -1,5 +1,7 @@
 {
-  "editor.rulers": [79],
+  "editor.rulers": [
+    79
+  ],
   "editor.fontSize": 12,
   "editor.formatOnSave": true,
   "editor.fontLigatures": true,
@@ -20,7 +22,9 @@
     "editor.formatOnSave": true
   },
   "[go]": {
-    "editor.rulers": [100],
+    "editor.rulers": [
+      100
+    ],
     "editor.insertSpaces": false,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -63,7 +67,9 @@
     "editor.formatOnSave": true
   },
   "[markdown]": {
-    "editor.rulers": [79],
+    "editor.rulers": [
+      79
+    ],
     "editor.formatOnSave": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -78,9 +84,10 @@
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
-    "editor.rulers": [79],
+    "editor.rulers": [
+      79
+    ],
     "editor.formatOnSave": false,
-
   },
   "prettier.printWidth": 120,
   // Python
@@ -106,7 +113,11 @@
   "explorer.confirmDelete": false,
   "markdownlint.config": {
     "no-inline-html": {
-      "allowed_elements": ["iframe", "img", "button"]
+      "allowed_elements": [
+        "iframe",
+        "img",
+        "button"
+      ]
     }
   },
   "workbench.editorAssociations": {
