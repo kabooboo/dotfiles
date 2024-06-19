@@ -12,17 +12,6 @@ else
   HDMI1_STRING="--off"
 fi
 
-if [ "$(xrandr  | grep -E '^HDMI-2' | grep ' connected ' | wc -l)" == "1" ]; then
-  HDMI2_STRING="--auto --pos 0x0 --rotate normal --above eDP-1"
-else
-  HDMI2_STRING="--off"
-fi
-
-if [ "$(xrandr  | grep -E '^HDMI-3' | grep ' connected ' | wc -l)" == "1" ]; then
-  HDMI3_STRING="--auto --pos 0x0 --rotate normal --above eDP-1"
-else
-  HDMI3_STRING="--off"
-fi
 
 if [ "$(xrandr  | grep -E '^DP-1' | grep ' connected ' | wc -l)" == "1" ]; then
   DP1_STRING="--auto --pos 0x0 --rotate normal --above eDP-1"
@@ -36,19 +25,10 @@ else
   DP2_STRING="--off"
 fi
 
-if [ "$(xrandr  | grep -E '^DP-2-1' | grep ' connected ' | wc -l)" == "1" ]; then
-  DP2_1_STRING="--auto --pos 0x0 --rotate normal --above eDP-1"
-else
-  DP2_1_STRING="--off"
-fi
-
 
 eval "xrandr \
   --output eDP-1 $EDP1_STRING \
   --output HDMI-1 $HDMI1_STRING \
-  --output HDMI-2 $HDMI2_STRING \
-  --output HDMI-3 $HDMI3_STRING \
   --output DP-1 $DP1_STRING \
-  --output DP-2 $DP2_STRING \
-  --output DP-2-1 $DP2_1_STRING \
+  --output DP-2 $DP2_STRING
   "

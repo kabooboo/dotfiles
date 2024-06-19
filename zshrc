@@ -5,7 +5,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # ZSH_THEME="spaceship"
-# SPACESHIP_KUBECTL_SHOW=true
+SPACESHIP_KUBECTL_SHOW=true
 # SPACESHIP_KUBECTL_VERSION_SHOW=false
 
 autoload -Uz compinit; compinit
@@ -144,7 +144,7 @@ alias code='code --password-store=gnome-libsecret'
 
 source <(kubectl completion zsh)
 source <(k completion zsh)
-source <(glab completion -s zsh)
+source <(glab completion -s zsh 2&> /dev/null)
 compdef _glab glab
 source <(stern --completion=zsh)
 
@@ -319,8 +319,8 @@ curl -N "https://api.openai.com/v1/chat/completions" \
 export EDITOR="nano"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export MODULAR_HOME="$HOME/.modular"
-export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin"
-export GOPATH=$HOME/.go
+export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$HOME/.pyenv/bin"
+export GOROOT=$HOME/.go
 export NVM_DIR="$HOME/.nvm"
 
 ### Some colors for grep
@@ -359,3 +359,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # grit
 export GRIT_INSTALL="$HOME/.grit"
 export PATH="$GRIT_INSTALL/bin:$PATH"
+
