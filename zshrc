@@ -68,23 +68,31 @@ autoload -U select-word-style; select-word-style bash
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# OLD ZSH CONFIG FOR HISTORY
 HIST_STAMPS="yyyy-mm-dd"
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
+setopt appendhistory
+setopt INC_APPEND_HISTORY
+setopt APPEND_HISTORY        # append to history file (Default)
+setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY      # Write the history file in the ':start:elapsed;command' format.
-setopt INC_APPEND_HISTORY    # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY         # Share history between all sessions.
 setopt HIST_IGNORE_DUPS      # Do not record an event that was just recorded again.
 setopt HIST_IGNORE_ALL_DUPS  # Delete an old recorded event if a new event is a duplicate.
 setopt HIST_IGNORE_SPACE     # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS     # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY           # Do not execute immediately upon history expansion.
-setopt APPEND_HISTORY        # append to history file (Default)
 setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
-
 HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
+## New history search config
+export MCFLY_FUZZY=1
+export MCFLY_RESULTS=20
+export MCFLY_DELETE_WITHOUT_CONFIRM=true
+export MCFLY_RESULTS_SORT=LAST_RUN
+
+
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -138,6 +146,8 @@ alias giphon="/usr/bin/env python3 -m giphon"
 alias deploy='eval glab ci run -b $(git rev-parse --abbrev-ref HEAD) --variables-env deploy_only:t'
 alias who-did-it='baraddur scan -j who-did-it -w 30'
 alias code='code --password-store=gnome-libsecret'
+alias bfg='java -jar $HOME/.local/jar/bfg.jar'
+alias ktest="kubectl run tmp-shell --rm -i --tty --image nicolaka/netshoot"
 
 ## Completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -319,7 +329,7 @@ curl -N "https://api.openai.com/v1/chat/completions" \
 export EDITOR="nano"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export MODULAR_HOME="$HOME/.modular"
-export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$HOME/.pyenv/bin"
+export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$HOME/.pyenv/bin:${KREW_ROOT:-$HOME/.krew}/bin"
 export GOROOT=$HOME/.go
 export NVM_DIR="$HOME/.nvm"
 
@@ -336,14 +346,14 @@ source ~/.secrets/credentials.sh
 source ~/.secrets/uris.sh
 
 # NVM
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 eval "$(starship init zsh)"
-
+eval "$(mcfly init zsh)"
 
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
@@ -360,3 +370,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export GRIT_INSTALL="$HOME/.grit"
 export PATH="$GRIT_INSTALL/bin:$PATH"
 
+# glab
+export GH_NO_UPDATE_NOTIFIER=1
+
+# golang
+export GOPATH="${HOME}/.go"
+export GOROOT="/usr/local/go"
