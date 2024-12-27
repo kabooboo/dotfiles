@@ -37,6 +37,6 @@ for file in ${HOME}/Backups/ankh/*; do
   rm $file
 done;
 
-gdrive sync upload ${HOME}/Backups/ankh "${DRIVE_BACKUPS_DIR}"
-rsync -Lr ${HOME}/Backups/ankh /mnt/external/backups/ankh/ || true
+gdrive files upload --recursive --parent "${DRIVE_BACKUPS_DIR}" "${HOME}/Backups/ankh"
+#rsync -Lr ${HOME}/Backups/ankh /mnt/external/backups/ankh/ || true
 rm -f ${HOME}/Backups/ankh/*.gpg

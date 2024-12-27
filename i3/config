@@ -9,7 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-exec_always --no-startup-id i3-autolayout autolayout
+exec_always --no-startup-id /home/gcreti/.cargo/bin/i3-autolayout autolayout
 exec_always --no-startup-id feh --bg-fill /home/gcreti/Pictures/Papes/Pic/mtn.jpg
 exec_always --no-startup-id ~/.screenlayout/autoxrandr.sh
 #exec_always --no-startup-id ~/.screenlayout/home.sh

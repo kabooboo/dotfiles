@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Zed
+GenericName=Text Editor
+Comment=A high-performance, multiplayer code editor.
+TryExec=/home/gcreti/.local/zed.app/libexec/zed-editor
+StartupNotify=true
+Exec=/home/gcreti/.local/zed.app/libexec/zed-editor %U
+Icon=/home/gcreti/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png
+Categories=Utility;TextEditor;Development;IDE;
+Keywords=zed;
+MimeType=text/plain;inode/directory;
+
+[Desktop Action NewWorkspace]
+Exec=/home/gcreti/.local/zed.app/libexec/zed-editor --new %U
+Name=Open a new workspace

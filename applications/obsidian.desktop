@@ -2,7 +2,7 @@
 Comment=Launch Obsidian
 Terminal=false
 Name=Obsidian
-Exec=/usr/local/bin/obsidian
+Exec=/usr/local/bin/obsidian --no-sandbox
 Type=Application
 Icon=obsidian
 MimeType=x-scheme-handler/obsidian;text/html;
