@@ -1,12 +1,12 @@
-configuration{
-    modi: "run,drun,emoji";
-    font: "Roboto 14";
+configuration {
+    modi: "clipboard:greenclip print,drun,emoji";
     show-icons: true;
     icon-theme: "Flat-Remix-Blue-Dark";
     terminal: "st";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
+    display-clipboard: " 📋 Clipboard ";
     display-emoji: " 🔥 Emoji ";
     display-drun: " ⚙️  Apps ";
     display-run: "   Run ";

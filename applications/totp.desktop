@@ -1,7 +1,0 @@
-[Desktop Entry]
-Comment=Launch kpmenu
-Terminal=false
-Name=TOTP
-Exec=kpmenu --customPromptFields 'echo Generate OTP'
-Type=Application
-Icon=keepassxc

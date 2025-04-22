@@ -86,11 +86,6 @@ setopt HIST_VERIFY           # Do not execute immediately upon history expansion
 setopt HIST_NO_STORE         # Don't store history commands
 setopt HIST_REDUCE_BLANKS    # Remove superfluous blanks from each command line being added to the history.
 HISTORY_IGNORE="(ls|cd|pwd|exit|cd)*"
-## New history search config
-export MCFLY_FUZZY=1
-export MCFLY_RESULTS=20
-export MCFLY_DELETE_WITHOUT_CONFIRM=true
-export MCFLY_RESULTS_SORT=LAST_RUN
 
 
 
@@ -134,12 +129,10 @@ source $ZSH/oh-my-zsh.sh
 
 ## Aliases
 alias k=kubectl
-alias ktx=kubectx
-alias kns=kubens
+alias ktx="kubectl ctx"
+alias kns="kubectl ns"
 alias dc="docker compose"
 alias d=docker
-alias dk="docker kill $(docker ps -q)"
-alias drm="docker rm $(docker ps -aq)"
 alias copy="xclip -selection clipboard"
 alias bctl=bluetoothctl
 alias giphon="/usr/bin/env python3 -m giphon"
@@ -150,13 +143,12 @@ alias bfg='java -jar $HOME/.local/jar/bfg.jar'
 alias ktest="kubectl run tmp-shell --rm -i --tty --image nicolaka/netshoot"
 
 ## Completion
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+source <(fzf --zsh)
 source <(kubectl completion zsh)
 source <(k completion zsh)
 source <(glab completion -s zsh 2&> /dev/null)
 compdef _glab glab
-source <(stern --completion=zsh)
 
 ## Functions
 # Open Redacted platform as an admin
@@ -330,7 +322,6 @@ export EDITOR="nano"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$PATH:/usr/local/go/bin:$HOME/.go/bin:$HOME/.local/bin:$HOME/.bin:$HOME/.cargo/bin:$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$HOME/.pyenv/bin:${KREW_ROOT:-$HOME/.krew}/bin"
-export GOROOT=$HOME/.go
 export NVM_DIR="$HOME/.nvm"
 
 ### Some colors for grep
@@ -353,7 +344,6 @@ source ~/.secrets/uris.sh
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 eval "$(starship init zsh)"
-eval "$(mcfly init zsh)"
 
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
@@ -364,7 +354,6 @@ fpath+=~/.zfunc
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-. "$HOME/.cargo/env"
 
 # grit
 export GRIT_INSTALL="$HOME/.grit"
@@ -375,4 +364,4 @@ export GH_NO_UPDATE_NOTIFIER=1
 
 # golang
 export GOPATH="${HOME}/.go"
-export GOROOT="/usr/local/go"
+# export GOROOT="/usr/lo/go"
