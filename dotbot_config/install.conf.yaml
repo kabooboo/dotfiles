@@ -1,0 +1,27 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- link:
+    $HOME/.nanorc: nanorc
+    $HOME/.zshrc: zshrc
+    $HOME/.zprofile: zprofile
+    $HOME/.gitconfig: gitconfig
+    $HOME/.zpath: zpath
+    $HOME/.oh-my-zsh/custom: oh-my-zsh
+    $HOME/.config/aerospace: aerospace
+    $HOME/.config/borders: borders
+    $HOME/.config/gh: gh
+    $HOME/.config/gh-copilot: gh-copilot
+    $HOME/.config/ghostty: ghostty
+    $HOME/.config/karabiner: karabiner
+    $HOME/.config/raycast: raycast
+    $HOME/.config/sketchybar: sketchybar
+
+
+- create: []
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]

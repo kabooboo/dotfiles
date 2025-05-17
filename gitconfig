@@ -1,0 +1,8 @@
+[user]
+	email = me@kaboo.boo
+	name = Gabriel Creti
+	signingkey = A84CBB85845774E7A7F076D0E3015A42D3CA9D22
+[push]
+	autoSetupRemote = true
+[commit]
+	gpgSign = true

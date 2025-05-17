@@ -1,0 +1,111 @@
+start-at-login = true
+
+after-login-command = []
+after-startup-command = []
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 0
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Notify Sketchybar about workspace change - TODO
+# exec-on-workspace-change = [
+#   '/bin/bash', '-c', '/opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+# ]
+
+on-focused-monitor-changed = []
+
+# You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
+# Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
+# Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
+automatically-unhide-macos-hidden-apps = true
+
+# Possible values: (qwerty|dvorak|colemak)
+# See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
+[key-mapping]
+    preset = 'qwerty'
+
+[gaps]
+    inner.horizontal = 7
+    inner.vertical =   7
+    outer.left =       5
+    outer.bottom =     5
+    outer.top =        7
+    outer.right =      5
+ 
+# 'main' binding mode declaration
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+# 'main' binding mode must be always presented
+# Fallback value (if you omit the key): mode.main.binding = {}
+[mode.main.binding]
+
+    # All possible keys:
+    # - Letters.        a, b, c, ..., z
+    # - Numbers.        0, 1, 2, ..., 9
+    # - Keypad numbers. keypad0, keypad1, keypad2, ..., keypad9
+    # - F-keys.         f1, f2, ..., f20
+    # - Special keys.   minus, equal, period, comma, slash, backslash, quote, semicolon,
+    #                   backtick, leftSquareBracket, rightSquareBracket, space, enter, esc,
+    #                   backspace, tab, pageUp, pageDown, home, end, forwardDelete,
+    #                   sectionSign (ISO keyboards only, european keyboards only)
+    # - Keypad special. keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual,
+    #                   keypadMinus, keypadMultiply, keypadPlus
+    # - Arrows.         left, down, up, right
+
+    # All possible modifiers: cmd, alt, ctrl, shift
+
+    # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
+    # You can uncomment the following lines to open up terminal with alt + enter shortcut
+    # (like in i3)
+    # alt-enter = '''exec-and-forget osascript -e '
+    # tell application "Terminal"
+    #     do script
+    #     activate
+    # end tell'
+    # '''
+
+    alt-ctrl-f = 'fullscreen'
+    alt-ctrl-shift-f = 'macos-native-fullscreen'
+    alt-ctrl-r = 'reload-config'
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#layout
+    alt-shift-l = 'layout h_tiles tiling'
+    alt-shift-k = 'flatten-workspace-tree'
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#focus
+    alt-ctrl-left = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop left'
+    alt-ctrl-down = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop down'
+    alt-ctrl-up = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop up'
+    alt-ctrl-right = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop right'
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#move
+    alt-shift-ctrl-left = 'exec-and-forget aerospace move-node-to-monitor --focus-follows-window left || aerospace move left'
+    alt-shift-ctrl-down = 'exec-and-forget aerospace move-node-to-monitor --focus-follows-window down || aerospace move down'
+    alt-shift-ctrl-up = 'exec-and-forget aerospace move-node-to-monitor --focus-follows-window up || aerospace move up'
+    alt-shift-ctrl-right = 'exec-and-forget aerospace move-node-to-monitor --focus-follows-window right || aerospace move right'
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#resize
+    alt-ctrl-minus = 'resize smart -50'
+    alt-ctrl-equal = 'resize smart +50'
+
+    # Must be alt, or else we lose the chrome shortcut
+    alt-ctrl-tab = 'exec-and-forget $HOME/.config/aerospace/next-tab.py'
+    alt-ctrl-shift-tab = 'exec-and-forget $HOME/.config/aerospace/next-tab.py --move-focused'
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+    alt-shift-ctrl-1 = 'workspace btn1'
+    alt-shift-ctrl-2 = 'workspace btn2'
+    alt-shift-ctrl-3 = 'workspace ext1'
+    alt-shift-ctrl-4 = 'workspace ext2'
+
+# Must assign a fixed number of workspaces for all screen groups. It must be the same for all.
+[workspace-to-monitor-force-assignment]
+btn1 = "Built-in Retina Display"
+btn2 = "Built-in Retina Display"
+ext1 = ["Dell U2424HE", "DELL U2722DE"]
+ext2 = ["Dell U2424HE", "DELL U2722DE"]

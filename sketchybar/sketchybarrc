@@ -1,0 +1,33 @@
+#!/usr/bin/env lua
+
+-- Load the sketchybar-package and prepare the helper binaries
+require("helpers")
+require("init")
+
+-- Add event for aerospace workspace change
+os.execute("sketchybar --add event aerospace_workspace_change")
+
+-- Get all workspaces
+local handle = io.popen("aerospace list-workspaces --all")
+local workspaces = handle:read("*a")
+handle:close()
+
+-- Iterate through each workspace
+for sid in string.gmatch(workspaces, "%S+") do
+  -- Add item for each workspace
+  local command = string.format(
+    "sketchybar --add item space.%s left "..
+    "--subscribe space.%s aerospace_workspace_change "..
+    "--set space.%s "..
+    "background.color=0x44ffffff "..
+    "background.corner_radius=5 "..
+    "background.height=20 "..
+    "background.drawing=off "..
+    "label=\"%s\" "..
+    "click_script=\"aerospace workspace %s\" "..
+    "script=\"%s/plugins/aerospace.sh %s\"",
+    sid, sid, sid, sid, sid, os.getenv("CONFIG_DIR"), sid
+  )
+  
+  os.execute(command)
+end
