@@ -10,7 +10,6 @@
     $HOME/.zprofile: zprofile
     $HOME/.gitconfig: gitconfig
     $HOME/.zpath: zpath
-    $HOME/.oh-my-zsh/custom: oh-my-zsh
     $HOME/.config/aerospace: aerospace
     $HOME/.config/borders: borders
     $HOME/.config/gh: gh
