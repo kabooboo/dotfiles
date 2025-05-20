@@ -104,8 +104,9 @@ automatically-unhide-macos-hidden-apps = true
     alt-shift-ctrl-4 = 'workspace ext2'
 
 # Must assign a fixed number of workspaces for all screen groups. It must be the same for all.
+# 🚨 CASE SENSITIVE
 [workspace-to-monitor-force-assignment]
 btn1 = "Built-in Retina Display"
 btn2 = "Built-in Retina Display"
-ext1 = ["Dell U2424HE", "DELL U2722DE"]
-ext2 = ["Dell U2424HE", "DELL U2722DE"]
+ext1 = ["DELL U2424HE", "DELL U2722DE"]
+ext2 = ["DELL U2424HE", "DELL U2722DE"]
