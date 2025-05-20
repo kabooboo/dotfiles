@@ -39,6 +39,37 @@ Window = TypedDict("Window", {
     "window-title": str,
 })
 
+def invert_dict(d):
+    """
+    Inverts a dictionary, handling cases where multiple keys map to the same value.
+    
+    Args:
+        d (dict): The dictionary to invert
+        
+    Returns:
+        dict: An inverted dictionary where:
+            - Keys are the original values
+            - Values are lists of original keys that mapped to that value
+    """
+    inverted = {}
+    
+    for key, value in d.items():
+        # If we can't use the value as a dictionary key (e.g., it's a list),
+        # we need to convert it to a hashable type
+        if isinstance(value, (list, dict, set)):
+            # Convert to a string representation or another hashable type
+            hashable_value = str(value)
+        else:
+            hashable_value = value
+            
+        # Add the key to the list of keys for this value
+        if hashable_value in inverted:
+            inverted[hashable_value].append(key)
+        else:
+            inverted[hashable_value] = [key]
+            
+    return inverted
+
 def run(cmd) -> str:
     result = subprocess.run(
         cmd, capture_output=True, text=True
@@ -65,17 +96,16 @@ def run_json(cmd) -> dict:
         print("Output was:", repr(result.stdout))
         raise
 
-def load_assignments(config_path) -> dict:
+def get_workspace_to_monitor(config_path) -> dict:
     with config_path.open("rb") as f:
         data = tomllib.load(f)
     return data.get("workspace-to-monitor-force-assignment", {})
 
-def get_monitors() -> list[Monitor]:
+def get_plugged_monitors() -> list[Monitor]:
     return run_json(["aerospace", "list-monitors", "--format", r"%{monitor-id} %{monitor-name}"])
 
 def get_windows() -> list[Window]:
     return run_json(["aerospace", "list-windows", "--all",  "--format", r"%{window-id} %{window-title} %{window-is-fullscreen} %{app-bundle-id} %{app-name} %{app-pid} %{workspace} %{workspace-is-focused} %{workspace-is-visible} %{monitor-id} %{monitor-name}"])
-
 
 def get_focused_window() -> Window | None:
     try:
@@ -83,10 +113,8 @@ def get_focused_window() -> Window | None:
     except Exception:
         return None
 
-
 def get_workspaces() -> list[Workspace]:
     return run_json(["aerospace", "list-workspaces", "--all", "--format", r"%{workspace} %{workspace-is-focused} %{workspace-is-visible} %{monitor-id} %{monitor-name}"])
-
 
 def compose_workspace_sequences(*, monitors: list[Monitor], workspaces: list[Workspace]) -> dict[int, list[Workspace]]:
     """
@@ -94,36 +122,30 @@ def compose_workspace_sequences(*, monitors: list[Monitor], workspaces: list[Wor
     These are the values of the workspaces that are bound to that given screen.
     """
     # Load assignments from config
-    assignments = load_assignments(AEROSPACE_CONFIG)
+    workspace_to_monitor = get_workspace_to_monitor(AEROSPACE_CONFIG)
+    monitor_to_workspace = invert_dict(workspace_to_monitor)
     # Get all monitors
     monitor_groups: dict[int, list[Workspace]] = {}
     for monitor in monitors:
-        monitor_id = monitor["monitor-id"]
-        monitor_workspaces = [ w for w  in workspaces if w["monitor-id"] == monitor_id]
+        monitor_id, monitor_name = monitor["monitor-id"], monitor["monitor-name"]
+        monitor_workspaces = [w for w  in workspaces if w["monitor-id"] == monitor_id and  w["workspace"] in monitor_to_workspace[monitor_name]]
         # Get list of workspace names assigned to this monitor_id
         monitor_groups[monitor_id] = monitor_workspaces
     return monitor_groups
 
 def cycle_workspace_group(move_focused: bool = False):
-    monitors = get_monitors()
+    plugged_monitors = get_plugged_monitors()
     workspaces = get_workspaces()
-    windows = get_windows()
 
-    workspace_sequences = compose_workspace_sequences(monitors=monitors, workspaces=workspaces)
+    monitor_id_to_workspace_sequence = compose_workspace_sequences(monitors=plugged_monitors, workspaces=workspaces)
     focused_window = get_focused_window()
     focused_window_target_workspace = None
 
-    # Raise alert if inconsistent number of workspaces accross screens
-    try:
-        amount_of_workpaces_in_monitor = len([w for w in workspaces if w["monitor-id"] == 1])
-        assert all((len(seq) == amount_of_workpaces_in_monitor for seq in workspace_sequences.values()))
-    except (IndexError, KeyError, StopIteration, AssertionError) as e:
-        run(["terminal-notifier", "-title", "Ctrl+Tab", "-message", f"Control+Tab failed as the workspaces are poorly set. Error: {type(e).__name__}."])
-        exit(1)
+    amount_of_workpaces_in_monitor = len(next(e for e in monitor_id_to_workspace_sequence.values()))
 
     # Detect what is the current workspace index in the currently focused window.
     monitor_1_visible_workspace = next(w for w in workspaces if w["monitor-id"] == 1 and w["workspace-is-visible"])["workspace"]
-    monitor_1_workspace_sequence = [w["workspace"] for w in workspace_sequences[1]]
+    monitor_1_workspace_sequence = [w["workspace"] for w in monitor_id_to_workspace_sequence[1]]
     index_in_monitor_1 = monitor_1_workspace_sequence.index(monitor_1_visible_workspace)
 
     if index_in_monitor_1 == amount_of_workpaces_in_monitor - 1:
@@ -131,9 +153,9 @@ def cycle_workspace_group(move_focused: bool = False):
     else:
         next_workspace_index = index_in_monitor_1 + 1
 
-    for monitor in monitors:
+    for monitor in plugged_monitors:
         monitor_id = monitor["monitor-id"]
-        workspace_sequence = [w["workspace"] for w in workspace_sequences[monitor["monitor-id"]] if w["monitor-id"] == monitor_id]
+        workspace_sequence = [w["workspace"] for w in monitor_id_to_workspace_sequence[monitor["monitor-id"]] if w["monitor-id"] == monitor_id]
         print(f"Handling monitor {monitor} with workspace sequence {workspace_sequence}")
 
         next_workspace = workspace_sequence[next_workspace_index]
@@ -141,7 +163,7 @@ def cycle_workspace_group(move_focused: bool = False):
 
         if move_focused and focused_window and focused_window["monitor-id"] == monitor_id:
             focused_window_target_workspace = next_workspace
-    
+
     if focused_window_target_workspace is not None:
         run(["aerospace", "move-node-to-workspace", "--focus-follows-window", "--window-id", str(focused_window["window-id"]), focused_window_target_workspace])
 
@@ -149,7 +171,7 @@ def cycle_workspace_group(move_focused: bool = False):
 if __name__ == "__main__":
 
     move_focused = (len(sys.argv) > 1 and sys.argv[1] == "--move-focused")
-    try:    
+    try:
         cycle_workspace_group(move_focused=move_focused)
     except Exception as e:
         run(["terminal-notifier", "-title", "Ctrl+Tab", "-message", f"Control+Tab failed. Error: {(str(e))} (type: {type(e).__name__})."])
