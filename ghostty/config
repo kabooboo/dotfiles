@@ -42,9 +42,18 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-font-family = Hack Nerd Font Mono
+font-family = Hack Nerd Font
+font-size = 13
+adjust-underline-position = 3
+adjust-cursor-thickness = 3
+background-opacity= 0.9
+window-vsync = true
 
 macos-titlebar-style = hidden
+macos-auto-secure-input = true
+macos-secure-input-indication = true
+shell-integration = zsh
+shell-integration-features = sudo
 
 gtk-titlebar = false
 window-decoration = false
@@ -53,6 +62,8 @@ gtk-adwaita = false
 
 window-padding-x = 15
 window-padding-y = 15
+# window-padding-balance = true
+# window-decoration = false
 
 quit-after-last-window-closed = true
 

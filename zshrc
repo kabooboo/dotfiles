@@ -1,4 +1,6 @@
 # Path to your Oh My Zsh installation.
+export LC_ALL=fr_FR.UTF-8
+
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -88,32 +90,29 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 # init stuff
-eval "$(starship init zsh)"
 
 # auto-complete stuff
 source <(yak completion zsh)
+eval "$(uv generate-shell-completion zsh)"
+eval "$(uvx --generate-shell-completion zsh)"
+source <(fzf --zsh)
+source <(kubectl completion zsh)
+source <(k completion zsh)
+
+eval "$(starship init zsh)"
 
 # aliases
 alias python="uv run python"
 alias ktx="kubectl ctx"
 alias kns="kubectl ns"
+alias k=kubectl
+alias dc=docker compose"
+alias d=docker"
+alias copy=pbcopy
 
 # public variables
-export KUBE_REPOSITORY_PATH="/Users/gcreti/Projects/hub/work/kube"
-export TFINFRA_REPOSITORY_PATH="/Users/gcreti/Projects/hub/work/terraform-infra"
+export EDITOR="nano"
 
 # functions
 yoink() {
@@ -170,4 +169,9 @@ yoink() {
 
   $HOME/.dotfiles/install
 
+}
+
+aws-profile() {
+  eval $(grep -E '^\[profile [a-zA-Z][a-zA-Z_-]+\]' "${HOME}/.aws/config" | awk -F"[][]" '{print $2}' |while read a p ; do echo "export AWS_PROFILE=$p" ; done  |
+  fzf +s --tac )
 }
