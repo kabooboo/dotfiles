@@ -90,8 +90,6 @@ safe-buffer/index.js:
   (*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> *)
 
 @googleapis/calendar/build/index.js:
-  (*! THIS FILE IS AUTO-GENERATED *)
-
 @googleapis/people/build/index.js:
   (*! THIS FILE IS AUTO-GENERATED *)
 */

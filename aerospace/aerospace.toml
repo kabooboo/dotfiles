@@ -108,5 +108,5 @@ automatically-unhide-macos-hidden-apps = true
 [workspace-to-monitor-force-assignment]
 btn1 = "Built-in Retina Display"
 btn2 = "Built-in Retina Display"
-ext1 = ["DELL U2424HE", "DELL U2722DE"]
-ext2 = ["DELL U2424HE", "DELL U2722DE"]
+ext1 = ["DELL U2424HE", "DELL U2722DE", "HUAWEI AD80HW"]
+ext2 = ["DELL U2424HE", "DELL U2722DE", "HUAWEI AD80HW"]

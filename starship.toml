@@ -3,6 +3,7 @@
 
 # Inserts a blank line between shell prompts
 add_newline = true
+command_timeout = 1000
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
@@ -136,7 +137,7 @@ symbol = "🪺 "
 
 [python]
 symbol = " "
-python_binary = [["uv", "run", "--no-python-downloads", "python"]]
+# python_binary = [["uv", "run", "--no-python-downloads", "python"]]
 
 [rlang]
 symbol = "ﳒ "

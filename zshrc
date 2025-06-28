@@ -96,9 +96,19 @@ source $ZSH/oh-my-zsh.sh
 source <(yak completion zsh)
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
+source "$(gcloud info --format='value(installation.sdk_root)')/path.zsh.inc"
+source "$(gcloud info --format='value(installation.sdk_root)')/completion.zsh.inc"
 source <(fzf --zsh)
 source <(kubectl completion zsh)
 source <(k completion zsh)
+source <(k9s completion zsh)
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/gcreti/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/gcreti/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/gcreti/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/gcreti/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
 
 eval "$(starship init zsh)"
 
@@ -107,8 +117,8 @@ alias python="uv run python"
 alias ktx="kubectl ctx"
 alias kns="kubectl ns"
 alias k=kubectl
-alias dc=docker compose"
-alias d=docker"
+alias dc="docker compose"
+alias d=docker
 alias copy=pbcopy
 
 # public variables
@@ -174,4 +184,18 @@ yoink() {
 aws-profile() {
   eval $(grep -E '^\[profile [a-zA-Z][a-zA-Z_-]+\]' "${HOME}/.aws/config" | awk -F"[][]" '{print $2}' |while read a p ; do echo "export AWS_PROFILE=$p" ; done  |
   fzf +s --tac )
+}
+
+# A function to visually change directories with lstr
+lcd() {
+    # Run lstr and capture the selected path into a variable.
+    # The TUI will draw on stderr, and the final path will be on stdout.
+    local selected_dir
+    selected_dir="$(lstr interactive -gG --icons -s -p)"
+
+    # If the user selected a path (and didn't just quit), `cd` into it.
+    # Check if the selection is a directory.
+    if [[ -n "$selected_dir" && -d "$selected_dir" ]]; then
+        cd "$selected_dir"
+    fi
 }
