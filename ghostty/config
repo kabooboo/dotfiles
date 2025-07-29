@@ -69,7 +69,7 @@ window-padding-color = extend
 
 quit-after-last-window-closed = true
 
-keybind = cmd+shift+f=write_screen_file:open
+keybind = cmd+shift+f=write_screen_file:paste
 keybind = cmd+shift+j=unbind
 keybind = cmd+w=unbind
 
