@@ -197,23 +197,6 @@ def cycle_workspace_group(move_focused: bool = False):
     except ValueError:
         index_in_first_monitor = 0
 
-    # Verify all monitors are at the same index position (synced)
-    for monitor_id, workspace_list in monitor_id_to_workspace_sequence.items():
-        visible_workspace = next(
-            (w for w in workspaces if w["monitor-id"] == monitor_id and w["workspace-is-visible"]),
-            None
-        )
-        if visible_workspace:
-            workspace_sequence = [w["workspace"] for w in workspace_list]
-            try:
-                current_index = workspace_sequence.index(visible_workspace["workspace"])
-                if current_index != index_in_first_monitor:
-                    # Out of sync! Resync this monitor to match the first monitor's index
-                    sync_workspace = workspace_sequence[index_in_first_monitor]
-                    run(["aerospace", "workspace", sync_workspace])
-            except (ValueError, IndexError):
-                pass
-
     if index_in_first_monitor == amount_of_workpaces_in_monitor - 1:
         next_workspace_index = 0
     else:
