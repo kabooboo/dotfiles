@@ -333,7 +333,7 @@
   "dependencies": {
     "@googleapis/calendar": "^9.8.0",
     "@googleapis/people": "^3.0.9",
-    "@raycast/api": "^1.94.2",
+    "@raycast/api": "^1.103.0",
     "@raycast/utils": "^1.19.1",
     "date-fns": "^4.1.0",
     "humanize-duration": "^3.32.1",
@@ -358,6 +358,10 @@
     "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
     "publish": "npx @raycast/api@latest publish"
   },
+  "platforms": [
+    "macOS",
+    "Windows"
+  ],
   "ai": {
     "instructions": "Include a link to the event in your response to make it easier for the user to view it.\nIf no email domain is provided for other attendees, call the `get-current-user` tool and prefer attendees from the same domain as the current user.\nTry to call the `search-contacts` tool in parallel when possible.\nCall the `get-current-time` tool if you need to know the current time, e.g. when creating an event within a relative time frame like \"today in 1h\".\nIf no attendees are provided, just create the event, it will be private.\n",
     "evals": [

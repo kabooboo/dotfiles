@@ -29,6 +29,7 @@ alias dc="docker compose"
 alias d=docker
 alias copy=pbcopy
 alias git-checkout='git branch | grep -v "^\*" | fzf --height=20% --reverse --info=inline | xargs git checkout'
+alias mi='mise run'
 
 # functions
 yoink() {
@@ -104,4 +105,22 @@ lcd() {
     if [[ -n "$selected_dir" && -d "$selected_dir" ]]; then
         cd "$selected_dir"
     fi
+}
+
+image_with_sha() {
+      local image_name="$1"
+      if [[ -z "$image_name" ]]; then
+          echo "Usage: get_image_sha <image-name>"
+          return 1
+      fi
+
+      local sha=$(docker manifest inspect
+  "$image_name" | jq -r '.config.digest')
+      if [[ "$sha" != "null" && -n "$sha" ]]; then
+          echo "${image_name}@${sha}"
+      else
+          echo "Error: Could not retrieve SHA for
+  image $image_name" >&2
+          return 1
+      fi
 }

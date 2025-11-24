@@ -7,7 +7,7 @@
                     {
                         "manipulators": [
                             {
-                                "description": "CAPS is either ESC if pressed or left_control+left_option if held.",
+                                "description": "CAPS is left_control+left_option if held.",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": { "optional": ["any"] }
@@ -28,7 +28,10 @@
                                 "description": "Unbind left command+Q",
                                 "from": {
                                     "key_code": "q",
-                                    "modifiers": { "mandatory": ["right_command"], "optional": ["any"] }
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
                                 },
                                 "to": [],
                                 "type": "basic"
@@ -44,8 +47,23 @@
                         "product_id": 258,
                         "vendor_id": 13364
                     },
-                    "manipulate_caps_lock_led": true,
                     "treat_as_built_in_keyboard": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 53296,
+                        "vendor_id": 13364
+                    },
+                    "treat_as_built_in_keyboard": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 50504,
+                        "vendor_id": 1133
+                    },
+                    "ignore": true
                 }
             ],
             "name": "Default profile",

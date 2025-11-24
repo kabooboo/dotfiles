@@ -152,10 +152,12 @@ def compose_workspace_sequences(*, plugged_monitors: list[Monitor], workspaces: 
     monitor_groups: dict[int, list[Workspace]] = {}
     for monitor in plugged_monitors:
         monitor_id, monitor_name = monitor["monitor-id"], monitor["monitor-name"]
+        # Convert monitor_id to string to match config format
+        monitor_id_str = str(monitor_id)
         try:
-            monitor_workspaces = [w for w  in workspaces if w["monitor-id"] == monitor_id and  w["workspace"] in monitor_to_workspace[monitor_name]]
+            monitor_workspaces = [w for w  in workspaces if w["monitor-id"] == monitor_id and  w["workspace"] in monitor_to_workspace[monitor_id_str]]
         except KeyError as e:
-            log(text=f"got {e} for monitor {monitor} ({monitor_to_workspace})")
+            log(text=f"No workspace assignments for monitor {monitor_id} ({monitor_name})")
             continue
         # Get list of workspace names assigned to this monitor_id
         monitor_groups[monitor_id] = monitor_workspaces
@@ -169,24 +171,66 @@ def cycle_workspace_group(move_focused: bool = False):
     focused_window = get_focused_window()
     focused_window_target_workspace = None
 
-    amount_of_workpaces_in_monitor = len(next(e for e in monitor_id_to_workspace_sequence.values()))
+    # Get the first available monitor's workspace count, or bail if none exist
+    if not monitor_id_to_workspace_sequence:
+        log(text="No monitor workspace sequences found", title="🐞 Ctrl+Tab")
+        return
 
-    # Detect what is the current workspace index in the currently focused window.
-    monitor_1_visible_workspace = next(w for w in workspaces if w["monitor-id"] == 1 and w["workspace-is-visible"])["workspace"]
-    monitor_1_workspace_sequence = [w["workspace"] for w in monitor_id_to_workspace_sequence[1]]
+    amount_of_workpaces_in_monitor = len(next(iter(monitor_id_to_workspace_sequence.values())))
+
+    # Use the first available monitor instead of assuming monitor-id=1 exists
+    first_monitor_id = next(iter(monitor_id_to_workspace_sequence.keys()))
+
+    # Find visible workspace on the first monitor
     try:
-        index_in_monitor_1 = monitor_1_workspace_sequence.index(monitor_1_visible_workspace)
-    except ValueError:
-        index_in_monitor_1 = 0
+        first_monitor_visible_workspace = next(
+            w for w in workspaces
+            if w["monitor-id"] == first_monitor_id and w["workspace-is-visible"]
+        )["workspace"]
+    except StopIteration:
+        log(text=f"No visible workspace found on monitor {first_monitor_id}", title="🐞 Ctrl+Tab")
+        return
 
-    if index_in_monitor_1 == amount_of_workpaces_in_monitor - 1:
+    first_monitor_workspace_sequence = [w["workspace"] for w in monitor_id_to_workspace_sequence[first_monitor_id]]
+    try:
+        index_in_first_monitor = first_monitor_workspace_sequence.index(first_monitor_visible_workspace)
+    except ValueError:
+        index_in_first_monitor = 0
+
+    # Verify all monitors are at the same index position (synced)
+    for monitor_id, workspace_list in monitor_id_to_workspace_sequence.items():
+        visible_workspace = next(
+            (w for w in workspaces if w["monitor-id"] == monitor_id and w["workspace-is-visible"]),
+            None
+        )
+        if visible_workspace:
+            workspace_sequence = [w["workspace"] for w in workspace_list]
+            try:
+                current_index = workspace_sequence.index(visible_workspace["workspace"])
+                if current_index != index_in_first_monitor:
+                    # Out of sync! Resync this monitor to match the first monitor's index
+                    sync_workspace = workspace_sequence[index_in_first_monitor]
+                    run(["aerospace", "workspace", sync_workspace])
+            except (ValueError, IndexError):
+                pass
+
+    if index_in_first_monitor == amount_of_workpaces_in_monitor - 1:
         next_workspace_index = 0
     else:
-        next_workspace_index = index_in_monitor_1 + 1
+        next_workspace_index = index_in_first_monitor + 1
 
     for monitor in plugged_monitors:
         monitor_id = monitor["monitor-id"]
+
+        # Skip monitors that don't have workspace assignments
+        if monitor_id not in monitor_id_to_workspace_sequence:
+            continue
+
         workspace_sequence = [w["workspace"] for w in monitor_id_to_workspace_sequence[monitor["monitor-id"]] if w["monitor-id"] == monitor_id]
+
+        # Skip if no workspaces found for this monitor
+        if not workspace_sequence or next_workspace_index >= len(workspace_sequence):
+            continue
 
         next_workspace = workspace_sequence[next_workspace_index]
         run(["aerospace", "workspace", next_workspace])

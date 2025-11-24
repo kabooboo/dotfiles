@@ -94,19 +94,24 @@ automatically-unhide-macos-hidden-apps = true
     alt-ctrl-equal = 'resize smart +50'
 
     # Must be alt, or else we lose the chrome shortcut
-    alt-ctrl-tab = 'exec-and-forget $HOME/.config/aerospace/next-tab.py'
-    alt-ctrl-shift-tab = 'exec-and-forget $HOME/.config/aerospace/next-tab.py --move-focused'
+    alt-ctrl-tab = 'exec-and-forget uv run $HOME/.config/aerospace/next-tab.py'
+    alt-ctrl-shift-tab = 'exec-and-forget uv run $HOME/.config/aerospace/next-tab.py --move-focused'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
     alt-shift-ctrl-1 = 'workspace btn1'
     alt-shift-ctrl-2 = 'workspace btn2'
-    alt-shift-ctrl-3 = 'workspace ext1'
-    alt-shift-ctrl-4 = 'workspace ext2'
+    alt-shift-ctrl-3 = 'workspace ext11'
+    alt-shift-ctrl-4 = 'workspace ext12'
+    alt-shift-ctrl-5 = 'workspace ext21'
+    alt-shift-ctrl-6 = 'workspace ext22'
 
 # Must assign a fixed number of workspaces for all screen groups. It must be the same for all.
 # 🚨 CASE SENSITIVE
 [workspace-to-monitor-force-assignment]
-btn1 = "Built-in Retina Display"
-btn2 = "Built-in Retina Display"
-ext1 = ["DELL U2424HE", "DELL U2722DE", "HUAWEI AD80HW"]
-ext2 = ["DELL U2424HE", "DELL U2722DE", "HUAWEI AD80HW"]
+btn1 = "2"
+btn2 = "2"
+ext11 = ["1"]
+ext12 = ["1"]
+ext21 = ["3"]
+ext22 = ["3"]
+
