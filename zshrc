@@ -19,6 +19,7 @@ source <(k9s completion zsh)
 
 # starship
 eval "$(starship init zsh)"
+eval "$(mise activate zsh)"
 
 # aliases
 alias python="uv run python"
@@ -123,4 +124,8 @@ image_with_sha() {
   image $image_name" >&2
           return 1
       fi
+}
+
+ray_dashboard() {
+  open http://localhost:8265 & k ray session $(k get raycluster -o name | sed 's%raycluster.ray.io/%%g') -n $(kubectl config view --minify --output 'jsonpath={..namespace}')
 }

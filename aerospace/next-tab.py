@@ -202,6 +202,10 @@ def cycle_workspace_group(move_focused: bool = False):
     else:
         next_workspace_index = index_in_first_monitor + 1
 
+    # Collect workspace switches, separating focused monitor to switch last
+    focused_monitor_id = focused_window["monitor-id"] if focused_window else None
+    workspace_switches: list[tuple[int, str]] = []  # (monitor_id, workspace)
+
     for monitor in plugged_monitors:
         monitor_id = monitor["monitor-id"]
 
@@ -216,10 +220,16 @@ def cycle_workspace_group(move_focused: bool = False):
             continue
 
         next_workspace = workspace_sequence[next_workspace_index]
-        run(["aerospace", "workspace", next_workspace])
+        workspace_switches.append((monitor_id, next_workspace))
 
         if move_focused and focused_window and focused_window["monitor-id"] == monitor_id:
             focused_window_target_workspace = next_workspace
+
+    # Sort so focused monitor's workspace switches last (avoids race condition)
+    workspace_switches.sort(key=lambda x: x[0] == focused_monitor_id)
+
+    for monitor_id, next_workspace in workspace_switches:
+        run(["aerospace", "workspace", next_workspace])
 
     if focused_window_target_workspace is not None:
         run(["aerospace", "move-node-to-workspace", "--focus-follows-window", "--window-id", str(focused_window["window-id"]), focused_window_target_workspace])
