@@ -98,20 +98,20 @@ automatically-unhide-macos-hidden-apps = true
     alt-ctrl-shift-tab = 'exec-and-forget uv run $HOME/.config/aerospace/next-tab.py --move-focused'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-    alt-shift-ctrl-1 = 'workspace btn1'
-    alt-shift-ctrl-2 = 'workspace btn2'
-    alt-shift-ctrl-3 = 'workspace ext11'
-    alt-shift-ctrl-4 = 'workspace ext12'
-    alt-shift-ctrl-5 = 'workspace ext21'
-    alt-shift-ctrl-6 = 'workspace ext22'
+    alt-shift-ctrl-1 = 'workspace mon11'
+    alt-shift-ctrl-2 = 'workspace mon21'
+    alt-shift-ctrl-3 = 'workspace mon11'
+    alt-shift-ctrl-4 = 'workspace mon12'
+    alt-shift-ctrl-5 = 'workspace mon21'
+    alt-shift-ctrl-6 = 'workspace mon22'
 
 # Must assign a fixed number of workspaces for all screen groups. It must be the same for all.
 # 🚨 CASE SENSITIVE
 [workspace-to-monitor-force-assignment]
-btn1 = "2"
-btn2 = "2"
-ext11 = ["1"]
-ext12 = ["1"]
-ext21 = ["3"]
-ext22 = ["3"]
+mon11 = ["1"]
+mon12 = ["1"]
+mon21 = ["2"]
+mon22 = ["2"]
+mon31 = ["3"]
+mon32 = ["3"]
 

@@ -10,6 +10,7 @@ import sys
 from typing import TypedDict
 
 AEROSPACE_CONFIG = Path(os.environ["HOME"]) / ".config" / "aerospace" / "aerospace.toml"
+CURRENT_TAB_FILE = Path("/tmp/aerospace-current-tab")
 
 Monitor = TypedDict("Monitor", {
     "monitor-id": int,
@@ -40,6 +41,17 @@ Window = TypedDict("Window", {
 
 def log(*, text: str, title: str = "Ctrl+Tab") -> None:
     run(["terminal-notifier", "-title", title, "-message", f"💬 {text}"])
+
+def read_current_tab() -> int:
+    """Read the current tab index from file. Returns 0 if file doesn't exist."""
+    try:
+        return int(CURRENT_TAB_FILE.read_text().strip())
+    except (FileNotFoundError, ValueError):
+        return 0
+
+def write_current_tab(index: int) -> None:
+    """Write the current tab index to file."""
+    CURRENT_TAB_FILE.write_text(str(index))
 
 def invert_dict(d):
     """
@@ -178,29 +190,17 @@ def cycle_workspace_group(move_focused: bool = False):
 
     amount_of_workpaces_in_monitor = len(next(iter(monitor_id_to_workspace_sequence.values())))
 
-    # Use the first available monitor instead of assuming monitor-id=1 exists
-    first_monitor_id = next(iter(monitor_id_to_workspace_sequence.keys()))
+    # Read current tab from file (source of truth)
+    current_tab_index = read_current_tab()
 
-    # Find visible workspace on the first monitor
-    try:
-        first_monitor_visible_workspace = next(
-            w for w in workspaces
-            if w["monitor-id"] == first_monitor_id and w["workspace-is-visible"]
-        )["workspace"]
-    except StopIteration:
-        log(text=f"No visible workspace found on monitor {first_monitor_id}", title="🐞 Ctrl+Tab")
-        return
-
-    first_monitor_workspace_sequence = [w["workspace"] for w in monitor_id_to_workspace_sequence[first_monitor_id]]
-    try:
-        index_in_first_monitor = first_monitor_workspace_sequence.index(first_monitor_visible_workspace)
-    except ValueError:
-        index_in_first_monitor = 0
-
-    if index_in_first_monitor == amount_of_workpaces_in_monitor - 1:
+    # Calculate next tab index with wrap-around
+    if current_tab_index >= amount_of_workpaces_in_monitor - 1:
         next_workspace_index = 0
     else:
-        next_workspace_index = index_in_first_monitor + 1
+        next_workspace_index = current_tab_index + 1
+
+    # Persist the new tab index to file
+    write_current_tab(next_workspace_index)
 
     # Collect workspace switches, separating focused monitor to switch last
     focused_monitor_id = focused_window["monitor-id"] if focused_window else None
@@ -230,6 +230,14 @@ def cycle_workspace_group(move_focused: bool = False):
 
     for monitor_id, next_workspace in workspace_switches:
         run(["aerospace", "workspace", next_workspace])
+
+    # Focus a window on each target workspace to ensure all monitors align to the new tab
+    for monitor_id, next_workspace in workspace_switches:
+        # Get fresh window list to avoid race condition with workspace switches
+        windows = get_windows()
+        workspace_windows = [w for w in windows if w["workspace"] == next_workspace]
+        if workspace_windows:
+            run(["aerospace", "focus", "--window-id", str(workspace_windows[0]["window-id"])])
 
     if focused_window_target_workspace is not None:
         run(["aerospace", "move-node-to-workspace", "--focus-follows-window", "--window-id", str(focused_window["window-id"]), focused_window_target_workspace])
