@@ -129,3 +129,47 @@ image_with_sha() {
 ray_dashboard() {
   open http://localhost:8265 & k ray session $(k get raycluster -o name | sed 's%raycluster.ray.io/%%g') -n $(kubectl config view --minify --output 'jsonpath={..namespace}')
 }
+
+# Stream logs from pods matching selected labels
+klogs() {
+  local ns=$(kubectl config view --minify -o jsonpath='{..namespace}')
+  ns=${ns:-default}
+
+  # Check if pods exist
+  if ! kubectl get pods --no-headers 2>/dev/null | grep -q .; then
+    echo "No pods found in namespace '$ns'"
+    return 1
+  fi
+
+  # Get unique label key=value pairs (common app labels first, then all others)
+  local labels=$(kubectl get pods -o json | jq -r '
+    [.items[].metadata.labels | to_entries[]]
+    | group_by("\(.key)=\(.value)")
+    | map(.[0] | "\(.key)=\(.value)")
+    | sort_by(
+        if test("^(app|app.kubernetes.io/name|kubernetes.io/app|component|service|name)=")
+        then "0" + . else "1" + . end
+      )
+    | .[]
+  ')
+
+  if [[ -z "$labels" ]]; then
+    echo "No labels found on pods in namespace '$ns'"
+    return 1
+  fi
+
+  # Use fzf to select a label
+  local selected=$(echo "$labels" | fzf \
+    --height=40% \
+    --reverse \
+    --header="Select label for: kubectl logs -f --tail 0 -l <label> (ns: $ns)" \
+    --preview="kubectl get pods -l {} -o wide 2>/dev/null" \
+    --preview-window=down:30%)
+
+  if [[ -z "$selected" ]]; then
+    return 0
+  fi
+
+  echo "Running: kubectl logs -f --tail 0 -l '$selected'"
+  kubectl logs -f --tail 0 -l "$selected"
+}
