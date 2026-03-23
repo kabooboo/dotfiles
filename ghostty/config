@@ -59,6 +59,7 @@ macos-titlebar-style = hidden
 macos-auto-secure-input = true
 macos-window-shadow = false
 macos-secure-input-indication = true
+macos-option-as-alt = left
 shell-integration = zsh
 shell-integration-features = sudo
 

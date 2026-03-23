@@ -19,7 +19,6 @@ source <(k9s completion zsh)
 
 # starship
 eval "$(starship init zsh)"
-eval "$(mise activate zsh)"
 
 # aliases
 alias python="uv run python"

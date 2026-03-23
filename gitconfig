@@ -13,7 +13,9 @@
 	required = true
 [credential "https://github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !/Users/gcreti/.local/share/mise/installs/github-cli/2.86.0/gh_2.86.0_macOS_arm64/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !/Users/gcreti/.local/share/mise/installs/github-cli/2.86.0/gh_2.86.0_macOS_arm64/bin/gh auth git-credential
+[safe]
+	directory = *

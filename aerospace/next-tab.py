@@ -228,16 +228,15 @@ def cycle_workspace_group(move_focused: bool = False):
     # Sort so focused monitor's workspace switches last (avoids race condition)
     workspace_switches.sort(key=lambda x: x[0] == focused_monitor_id)
 
+    # For each monitor: focus any window on it first (to bring keyboard focus there),
+    # then switch to the target workspace. This ensures the workspace switch applies
+    # to the correct monitor even when force-assigned apps (e.g. Chrome) are elsewhere.
+    windows = get_windows()
     for monitor_id, next_workspace in workspace_switches:
+        monitor_windows = [w for w in windows if w["monitor-id"] == monitor_id]
+        if monitor_windows:
+            run(["aerospace", "focus", "--window-id", str(monitor_windows[0]["window-id"])])
         run(["aerospace", "workspace", next_workspace])
-
-    # Focus a window on each target workspace to ensure all monitors align to the new tab
-    for monitor_id, next_workspace in workspace_switches:
-        # Get fresh window list to avoid race condition with workspace switches
-        windows = get_windows()
-        workspace_windows = [w for w in windows if w["workspace"] == next_workspace]
-        if workspace_windows:
-            run(["aerospace", "focus", "--window-id", str(workspace_windows[0]["window-id"])])
 
     if focused_window_target_workspace is not None:
         run(["aerospace", "move-node-to-workspace", "--focus-follows-window", "--window-id", str(focused_window["window-id"]), focused_window_target_workspace])
