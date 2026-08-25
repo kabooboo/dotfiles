@@ -1,24 +1,33 @@
 export LC_ALL=fr_FR.UTF-8
 export EDITOR="nano"
 export ZSH="$HOME/.oh-my-zsh"
+ZSH_DISABLE_COMPFIX=true
 
 ZSH_THEME="robbyrussell"
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
-# auto-complete stuff
-source <(yak completion zsh)
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
-source "$(gcloud info --format='value(installation.sdk_root)')/path.zsh.inc"
-source "$(gcloud info --format='value(installation.sdk_root)')/completion.zsh.inc"
-source <(fzf --zsh)
-source <(kubectl completion zsh)
-source <(k completion zsh)
-source <(k9s completion zsh)
+# auto-complete stuff (cached; `rm ~/.cache/zsh-completions.zsh` to refresh)
+_zcomp=$HOME/.cache/zsh-completions.zsh
+if [[ ! -s $_zcomp || -n $_zcomp(#qN.md+7) ]]; then
+  { yak completion zsh
+    uv generate-shell-completion zsh
+    uvx --generate-shell-completion zsh
+    fzf --zsh
+    kubectl completion zsh
+    k9s completion zsh
+    starship init zsh
+  } >| $_zcomp
+fi
+source $_zcomp
+compdef k=kubectl
 
-# starship
-eval "$(starship init zsh)"
+_gcloud=(${HOME}/.local/share/mise/installs/gcloud/*(/On))
+if (( $#_gcloud )); then
+  source $_gcloud[1]/path.zsh.inc
+  source $_gcloud[1]/completion.zsh.inc
+fi
+unset _zcomp _gcloud
 
 # aliases
 alias python="uv run python"
@@ -30,6 +39,7 @@ alias d=docker
 alias copy=pbcopy
 alias git-checkout='git branch | grep -v "^\*" | fzf --height=20% --reverse --info=inline | xargs git checkout'
 alias mi='mise run'
+alias claude="claude --model claude-opus-5"
 
 # functions
 yoink() {
@@ -172,3 +182,4 @@ klogs() {
   echo "Running: kubectl logs -f --tail 0 -l '$selected'"
   kubectl logs -f --tail 0 -l "$selected"
 }
+
